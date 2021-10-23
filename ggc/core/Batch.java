@@ -1,7 +1,7 @@
 package ggc.core;
 
 public class Batch {
-    private double _price;
+    private double _priceUnit;
     private int _quantity;
     private Partner _provider;
 
@@ -10,7 +10,7 @@ public class Batch {
     }
 
     public double getPrice(){
-        return _price;
+        return _priceUnit;
     }
 
     public int getQuantity(){
@@ -22,6 +22,7 @@ public class Batch {
     }
 
     public void deleteBatch(){
-        
+        if (_quantity == 0)
+            
     }
 }

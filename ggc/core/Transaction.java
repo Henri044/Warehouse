@@ -3,14 +3,10 @@ package ggc.core;
 public abstract class Transaction {
     private int _id;
     private Date _paymentDate;
-    private double _baseValue;
+    double _baseValue;
     private int _quantity;
     private Partner _partner;
     private Product _product;
-
-    public Transaction(){
-
-    }
 
     public void registerBreakdown(String partnerId, String productId, int quantity){
 
@@ -25,7 +21,7 @@ public abstract class Transaction {
     }
 
     public Date getPaymentDate(){
-
+        return _paymentDate;
     }
 
     public boolean isPaid(){
