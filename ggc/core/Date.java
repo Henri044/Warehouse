@@ -7,7 +7,7 @@ public class Date {
       _days = 0;
    }
 
-   public int getDays(){//?//
+   public int getDays(){//?
       return _days;
    }
 
@@ -17,7 +17,7 @@ public class Date {
    }
 
    public int difference(Date other){
-      _days -= other.getDays();//?//
+      _days -= other.getDays();//?
    }
 
    public static Date now(){

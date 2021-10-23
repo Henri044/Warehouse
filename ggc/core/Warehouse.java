@@ -23,7 +23,7 @@ public class Warehouse implements Serializable {
   private Set<Partner> _partner;
 
   Warehouse(Date date, int _nextTransictionId){
-    _date = Date//?//;
+    _date = Date//? ;
     _nextTransictionId = 0;
     _partner = new HashSet<>();
   }
