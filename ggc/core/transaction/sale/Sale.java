@@ -1,4 +1,7 @@
-package gcc.core.Transaction;
+package gcc.core.transaction.sale;
+
+import gcc.core.product.Product;
+
 
 public abstract class Sale extends Transiction{
     

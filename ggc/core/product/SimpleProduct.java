@@ -1,4 +1,6 @@
-package ggc.core.Product;
+package ggc.core.product;
+
+import gcc.core.product.Product;
 
 public class SimpleProduct extends Product{
     
@@ -10,6 +12,7 @@ public class SimpleProduct extends Product{
 
     }
 
+    @Override
     void checkQuantity(int quantity){
         
     }

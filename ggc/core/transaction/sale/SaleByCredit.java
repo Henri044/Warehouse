@@ -1,4 +1,4 @@
-package gcc.core.Transiction.Sale;
+package gcc.core.transaction.sale;
 
 public class SaleByCredit {
     private Date _deadline;
@@ -9,6 +9,6 @@ public class SaleByCredit {
     }
 
     public String toString(){
-        
+        return ""; //TO DO
     }
 }

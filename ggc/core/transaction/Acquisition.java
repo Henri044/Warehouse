@@ -1,4 +1,4 @@
-package ggc.core.Transiction;
+package ggc.core.transiction;
 
 public class Acquisition extends Transiction{
 
@@ -7,6 +7,6 @@ public class Acquisition extends Transiction{
     }
 
     public String toString(){
-
+        return ""; //TO DO
     }
 }

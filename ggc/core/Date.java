@@ -7,17 +7,19 @@ public class Date {
       _days = 0;
    }
 
-   public int getDays(){//?//
+   public int getDays(){//?
       return _days;
    }
 
-   public Date add(int days){
+   public Date add(int days) throws InvalidDateException {
+      if (days <= 0)
+         throw new InvalidDateException();
       _days += days;
       return this;
    }
 
    public int difference(Date other){
-      _days -= other.getDays();//?//
+      return (_days -= other.getDays());//?
    }
 
    public static Date now(){

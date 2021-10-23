@@ -10,7 +10,7 @@ import ggc.core.exception.BadEntryException;
 import ggc.core.exception.ImportFileException;
 import ggc.core.exception.UnavailableFileException;
 import ggc.core.exception.MissingFileAssociationException;
-import ggc.core.exception.InvalidDateException
+import ggc.core.exception.InvalidDateException;
 
 /** Façade for access. */
 public class WarehouseManager {
@@ -33,7 +33,9 @@ public class WarehouseManager {
    * @@throws MissingFileAssociationException
    */
 
-  public void open()
+  public void open() {
+
+  }
 
   public void save() throws IOException, FileNotFoundException, MissingFileAssociationException {
     //FIXME implement serialization method
@@ -83,29 +85,29 @@ public class WarehouseManager {
   }
 
   public int currentDate() {
-    return _warehouse.getDate(); //ESCREVER ESTE METODO NO WAREHOUSE
+    return _warehouse.getDate();
   }
 
   public void requestDaysToAdvance(int days) throws InvalidDateException {
     try {
-      return _warehouse.advanceDays(days);
+      _warehouse.advanceDays(days);
     } catch (InvalidDateException ide) { throw ide; }
   }
 
   // Gestão e consulta de dados da aplicação???
 
   public int currentBalance() {
-    return _warehouse.getCurrentBalance();
+    return _warehouse.getBalance();
   }
 
-  public int contabilisticBalance() {
+  /*public int contabilisticBalance() {
     return _warehouse.getContabilisticBalance(); //definir metodo
-  }
+  }*/
 
-  public String getAllProducts() {
+  /*public String getAllProducts() {
     return _warehouse.getAllProducts(); // definir metodo
-  }
+  }*/
 
-  
+
 
 }
