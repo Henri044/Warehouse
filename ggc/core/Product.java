@@ -1,4 +1,4 @@
-package ggc.core;
+package ggc.core.Product;
 import java.util.List;
 
 public abstract class Product {

@@ -7,12 +7,14 @@ public class Partner{
     private String _status;
     private double _points;
 
-    public Partner(){
-
+    public Partner(String name, String adress, String id){
+        _name = name;
+        _adress = adress;
+        _id = id;
     }
 
     public void manageProductNotifications(String partnerId, String productId){
-
+    
     }
 
     public String getId(){
