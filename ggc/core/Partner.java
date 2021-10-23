@@ -14,7 +14,7 @@ public class Partner{
     }
 
     public void manageProductNotifications(String partnerId, String productId){
-    
+        return; //TO DO
     }
 
     public String getId(){

@@ -1,4 +1,6 @@
-package ggc.core.Product;
+package ggc.core.product;
+
+import ggc.core.product.Product;
 
 public class SimpleProduct extends Product{
     
@@ -7,10 +9,11 @@ public class SimpleProduct extends Product{
     }
 
     public String toString(){
-
+        return ""; //TO DO
     }
 
+    @Override
     void checkQuantity(int quantity){
-        
+
     }
 }

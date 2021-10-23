@@ -1,7 +1,5 @@
-package gcc.core;
+package ggc.core;
 
 public class Component {
     private int quantity;
-
-    public
 }

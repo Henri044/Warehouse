@@ -11,13 +11,15 @@ public class Date {
       return _days;
    }
 
-   public Date add(int days){
+   public Date add(int days) throws InvalidDateException {
+      if (days <= 0)
+         throw new InvalidDateException();
       _days += days;
       return this;
    }
 
    public int difference(Date other){
-      _days -= other.getDays();//?
+      return (_days -= other.getDays());//?
    }
 
    public static Date now(){

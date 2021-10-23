@@ -1,5 +1,7 @@
 package ggc.core;
 
+import ggc.core.Partner;
+
 public class Batch {
     private double _priceUnit;
     private int _quantity;
@@ -18,11 +20,11 @@ public class Batch {
     }
 
     public String toString(){
-
+        return ""; //TO DO
     }
 
-    public void deleteBatch(){
-        if (_quantity == 0)
-            
+    public void deleteBatch() {
+        if (_quantity == 0) {}
+            return;
     }
 }

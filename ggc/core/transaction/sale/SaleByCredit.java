@@ -1,4 +1,8 @@
-package gcc.core.Transiction.Sale;
+package ggc.core.transaction.sale;
+
+import ggc.core.Date;
+import ggc.core.Partner;
+import ggc.core.product.Product;
 
 public class SaleByCredit {
     private Date _deadline;
@@ -9,6 +13,6 @@ public class SaleByCredit {
     }
 
     public String toString(){
-        
+        return ""; //TO DO
     }
 }
