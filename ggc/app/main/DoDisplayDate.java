@@ -4,6 +4,8 @@ import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
 import ggc.core.WarehouseManager;
 
+import ggc.app.main.Message;
+
 /**
  * Show current date.
  */
@@ -17,7 +19,7 @@ class DoDisplayDate extends Command<WarehouseManager> {
   public final void execute() throws CommandException {
     //FIXME implement command
     int date = _receiver.currentDate();
-    _display.addLine("The date is: " + date);
+    _display.addLine(Message.currentDate(date));
     _display.display();
   }
 
