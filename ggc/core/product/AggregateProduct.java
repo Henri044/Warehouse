@@ -5,12 +5,12 @@ import ggc.core.Partner;
 
 public class AggregateProduct extends Product{
     
-    AggregateProduct(String id){
-
+    public AggregateProduct(String id){
+        super(); //TO DO
     }
 
     @Override
-    void checkQuantity(int quantity, Partner provider){
+    public void checkQuantity(int quantity, Partner provider){
         return; //TO DO
     }
 

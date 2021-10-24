@@ -12,6 +12,15 @@ public abstract class Transaction {
     private Partner _partner;
     private Product _product;
 
+    public Transaction(int id, Date paymentDate, double baseValue, int quantity, Partner partner, Product product) {
+        _id = id;
+        _paymentDate = paymentDate;
+        _baseValue = baseValue;
+        _quantity = quantity;
+        _partner = partner;
+        _product = product;
+    }
+
     public void registerBreakdown(String partnerId, String productId, int quantity){
         return; //TO DO
     }

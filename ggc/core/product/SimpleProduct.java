@@ -1,11 +1,12 @@
 package ggc.core.product;
 
 import ggc.core.product.Product;
+import ggc.core.Partner;
 
 public class SimpleProduct extends Product{
     
-    void SimpleProduct(String id) {
-        
+    public SimpleProduct(String id) {
+        super(); //TO DO
     }
 
     public String toString(){
@@ -13,7 +14,7 @@ public class SimpleProduct extends Product{
     }
 
     @Override
-    void checkQuantity(int quantity){
+    public void checkQuantity(int quantity, Partner provider){
 
     }
 }

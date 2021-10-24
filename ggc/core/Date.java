@@ -1,5 +1,7 @@
 package ggc.core;
 
+import ggc.core.exception.NonPositiveDateException;
+
 public class Date {
    private int _days;
    
@@ -11,9 +13,9 @@ public class Date {
       return _days;
    }
 
-   public Date add(int days) throws InvalidDateException {
+   public Date add(int days) throws NonPositiveDateException {
       if (days <= 0)
-         throw new InvalidDateException();
+         throw new NonPositiveDateException();
       _days += days;
       return this;
    }
@@ -22,7 +24,7 @@ public class Date {
       return (_days -= other.getDays());//?
    }
 
-   public static Date now(){
-       return this;
+   public Date now() {
+       return this; // ASK PROF STATIC???
    }
 }

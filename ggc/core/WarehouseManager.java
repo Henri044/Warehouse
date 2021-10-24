@@ -10,13 +10,14 @@ import ggc.core.exception.BadEntryException;
 import ggc.core.exception.ImportFileException;
 import ggc.core.exception.UnavailableFileException;
 import ggc.core.exception.MissingFileAssociationException;
-import ggc.core.exception.InvalidDateException;
+import ggc.core.exception.NonPositiveDateException;
 
 /** Façade for access. */
 public class WarehouseManager {
 
   /** Name of file storing current warehouse. */
   private String _filename = "";
+  private String _loadFile = new String();
 
   /** The warehouse itself. */
   private Warehouse _warehouse = new Warehouse();
@@ -88,10 +89,10 @@ public class WarehouseManager {
     return _warehouse.getDate();
   }
 
-  public void requestDaysToAdvance(int days) throws InvalidDateException {
+  public void requestDaysToAdvance(int days) throws NonPositiveDateException {
     try {
       _warehouse.advanceDays(days);
-    } catch (InvalidDateException ide) { throw ide; }
+    } catch (NonPositiveDateException ide) { throw ide; }
   }
 
   // Gestão e consulta de dados da aplicação???

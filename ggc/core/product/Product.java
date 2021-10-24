@@ -1,15 +1,19 @@
 package ggc.core.product;
 
 import java.util.List;
+import java.util.ArrayList;
+
 import ggc.core.Batch;
+import ggc.core.Partner;
+
 
 public abstract class Product {
     private double _maxPrice;
     private String _id;
     private List<Batch> _batches;
 
-    public Product(){
-
+    Product(){
+        //TO DO
     }
 
     public List<Batch> breakdown(){
@@ -25,7 +29,5 @@ public abstract class Product {
         return ""; //TO DO
     }
 
-    public abstract void checkQuantity(int quantity, Partner p){
-        return; //TO DO
-    }
+    public abstract void checkQuantity(int quantity, Partner provider);
 }
