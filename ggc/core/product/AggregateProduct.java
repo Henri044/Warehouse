@@ -3,7 +3,9 @@ package ggc.core.product;
 import ggc.core.product.Product;
 import ggc.core.Partner;
 
-public class AggregateProduct extends Product{
+import java.io.Serializable;
+
+public class AggregateProduct extends Product implements Serializable {
     
     public AggregateProduct(String id){
         super(); //TO DO

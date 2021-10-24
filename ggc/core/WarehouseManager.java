@@ -5,6 +5,12 @@ package ggc.core;
 import java.io.Serializable;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.io.ObjectOutputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 
 import ggc.core.exception.BadEntryException;
 import ggc.core.exception.ImportFileException;
@@ -14,13 +20,13 @@ import ggc.core.exception.NonPositiveDateException;
 import ggc.core.exception.SamePartnerKeyException;
 import ggc.core.exception.NonExistentPartnerKeyException;
 
-
 /** Façade for access. */
 public class WarehouseManager {
 
   /** Name of file storing current warehouse. */
   private String _filename = "";
   private String _loadFile = new String();
+  private boolean _changed = true;
 
   /** The warehouse itself. */
   private Warehouse _warehouse = new Warehouse();
@@ -37,12 +43,35 @@ public class WarehouseManager {
    * @@throws MissingFileAssociationException
    */
 
-  public void open() {
+  public void open() throws ClassNotFoundException, IOException {
+    try {
+      ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(_filename)));
+      _warehouse = (Warehouse) ois.readObject();
+      ois.close();
+    }
+    catch (ClassNotFoundException cnfe) { throw cnfe; }
+    catch (IOException e) { throw e; }
 
+    _loadFile = _filename;
+    _changed = true;
   }
 
   public void save() throws IOException, FileNotFoundException, MissingFileAssociationException {
     //FIXME implement serialization method
+    if (_changed) {
+      if (!hasLoadFile())
+        setLoadFile(_filename);
+      try {
+        ObjectOutputStream oos = new ObjectOutputStream(
+          new BufferedOutputStream(
+            new FileOutputStream(getLoadFile())));
+        oos.writeObject(_warehouse);
+        oos.close();
+      }
+      catch (FileNotFoundException fnfe) { throw fnfe; }
+      catch (IOException e) { throw e; }
+      _changed = false;
+    }
   }
 
   /**
@@ -60,8 +89,18 @@ public class WarehouseManager {
    * @@param filename
    * @@throws UnavailableFileException
    */
-  public void load(String filename) throws UnavailableFileException, ClassNotFoundException  {
+  public void load(String filename) throws UnavailableFileException, ClassNotFoundException {
     //FIXME implement serialization method
+    try {
+      _filename = filename;
+      open();
+    }
+    catch (ClassNotFoundException cnfe) {
+      throw cnfe;
+    }
+    catch (IOException e) {
+      throw new UnavailableFileException(_filename);
+    }
   }
 
   /**
@@ -115,6 +154,12 @@ public class WarehouseManager {
       return _warehouse.showPartner(id);
     } catch (NonExistentPartnerKeyException nepk) { throw nepk; }
   }
+
+  /*
+  public String showPartners() {
+    _warehouse.showPartners();
+  }
+  */
 
   /*public int contabilisticBalance() {
     return _warehouse.getContabilisticBalance(); //definir metodo

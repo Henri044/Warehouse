@@ -2,7 +2,9 @@ package ggc.core;
 
 import ggc.core.Partner;
 
-public class Batch {
+import java.io.Serializable;
+
+public class Batch implements Serializable {
     private double _priceUnit;
     private int _quantity;
     private Partner _provider;

@@ -2,7 +2,9 @@ package ggc.core;
 
 import ggc.core.exception.NonPositiveDateException;
 
-public class Date {
+import java.io.Serializable;
+
+public class Date implements Serializable {
    private int _days;
    
    public Date(){

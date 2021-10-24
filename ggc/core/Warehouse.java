@@ -16,6 +16,7 @@ import ggc.core.exception.NonExistentPartnerKeyException;
 import ggc.core.product.Product;
 import ggc.core.Partner;
 import ggc.core.Date;
+import ggc.core.Parser;
 
 /**
  * Class Warehouse implements a warehouse.
@@ -69,6 +70,26 @@ public class Warehouse implements Serializable {
 
     return (partner.getId() + "|" + partner.getName() + "|" + partner.getAddress());
   }
+
+  /*
+  public String showPartners {
+    Set<String> unsortedPartnersId = new HashSet<>();
+
+    unsortedPartnersId = _partners.keySet();
+
+    List<String> sortedPartnersId = new ArrayList<String>(unsortedPartnersId);
+
+    Collections.sort(sortedPartnersId);
+
+    List<String> sortedPartners = new ArrayList<>();
+
+    for (int i = 0; i < sortedPartnersId.size(); i++) {
+      sortedPartners.add(showPartner(sortedPartnersId.get()) + "\n");
+    }
+
+    return sortedPartners;
+  }
+  */
   // FIXME define attributes
   // FIXME define contructor(s)
   // FIXME define methods
@@ -81,6 +102,13 @@ public class Warehouse implements Serializable {
    */
   void importFile(String txtfile) throws IOException, BadEntryException /* FIXME maybe other exceptions */ {
     //FIXME implement method
+    Parser parser = new Parser(this);
+
+    try {
+      parser.parseFile(txtfile);
+    } catch (IOException | BadEntryException e) {
+      throw e;
+    }
   }
 
 }

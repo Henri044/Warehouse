@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import ggc.core.Batch;
 import ggc.core.Partner;
 
+import java.io.Serializable;
 
-public abstract class Product {
+
+public abstract class Product implements Serializable {
     private double _maxPrice;
     private String _id;
     private List<Batch> _batches;
