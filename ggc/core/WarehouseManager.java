@@ -11,6 +11,9 @@ import ggc.core.exception.ImportFileException;
 import ggc.core.exception.UnavailableFileException;
 import ggc.core.exception.MissingFileAssociationException;
 import ggc.core.exception.NonPositiveDateException;
+import ggc.core.exception.SamePartnerKeyException;
+import ggc.core.exception.NonExistentPartnerKeyException;
+
 
 /** Façade for access. */
 public class WarehouseManager {
@@ -99,6 +102,18 @@ public class WarehouseManager {
 
   public int currentBalance() {
     return _warehouse.getBalance();
+  }
+
+  public void registerPartner(String id, String name, String address) throws SamePartnerKeyException {
+    try {
+      _warehouse.registerPartner(id, name, address);
+    } catch (SamePartnerKeyException spke) { throw spke; }
+  }
+
+  public String showPartner(String id) throws NonExistentPartnerKeyException{
+    try {
+      return _warehouse.showPartner(id);
+    } catch (NonExistentPartnerKeyException nepk) { throw nepk; }
   }
 
   /*public int contabilisticBalance() {

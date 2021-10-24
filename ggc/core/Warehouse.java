@@ -11,6 +11,8 @@ import java.io.IOException;
 
 import ggc.core.exception.BadEntryException;
 import ggc.core.exception.NonPositiveDateException;
+import ggc.core.exception.SamePartnerKeyException;
+import ggc.core.exception.NonExistentPartnerKeyException;
 import ggc.core.product.Product;
 import ggc.core.Partner;
 import ggc.core.Date;
@@ -36,19 +38,6 @@ public class Warehouse implements Serializable {
     _products = new ArrayList<>();
   }
 
-  public Partner getPartner(String id){
-    return _partners.get(id);
-  }
-
-  public List<Partner> getPartners() {
-    List<Partner> list = new ArrayList<>();
-
-    for(Partner p : _partners.values())
-      list.add(p);
-
-    return list;
-  }
-
   public int getDate() {
     return _date.getDays();
   }
@@ -61,6 +50,24 @@ public class Warehouse implements Serializable {
 
   public int getBalance() {
     return (int)_balance;
+  }
+
+  public void registerPartner(String id, String name, String address) throws SamePartnerKeyException{
+    Partner newPartner = new Partner(id, name, address);
+
+    if (_partners.containsKey(id))
+      throw new SamePartnerKeyException();
+
+    _partners.put(id, newPartner);
+  }
+
+  public String showPartner(String id) throws NonExistentPartnerKeyException {
+    if (!_partners.containsKey(id))
+      throw new NonExistentPartnerKeyException();
+
+    Partner partner = _partners.get(id);
+
+    return (partner.getId() + "|" + partner.getName() + "|" + partner.getAddress());
   }
   // FIXME define attributes
   // FIXME define contructor(s)
