@@ -32,7 +32,8 @@ public class Warehouse implements Serializable {
   //private float _contabilisticBalance;
   private List<Product> _products;
 
-  Warehouse(){
+  Warehouse() {
+
     _date = new Date();
     _nextTransictionId = 0;
     _partners = new HashMap<>();
@@ -68,7 +69,9 @@ public class Warehouse implements Serializable {
 
     Partner partner = _partners.get(id);
 
-    return (partner.getId() + "|" + partner.getName() + "|" + partner.getAddress());
+    return (partner.getId() + "|" + partner.getName() + "|" + partner.getAddress() + "|" + partner.getStatus()
+      + "|" + partner.getPoints() + "|" + partner.getAcquisitionsValue() + "|" + partner.getEffectiveSalesValue()
+      + "|" + partner.getPaidSalesValue() + "\n");
   }
 
   /*
@@ -90,6 +93,8 @@ public class Warehouse implements Serializable {
     return sortedPartners;
   }
   */
+
+
   // FIXME define attributes
   // FIXME define contructor(s)
   // FIXME define methods

@@ -8,11 +8,16 @@ public class Partner implements Serializable {
     private String _address;
     private String _status;
     private double _points;
+    private double _acquisitionsValue;
+    private double _effectiveSalesValue;
+    private double _paidSalesValue;
+
 
     public Partner(String id, String name, String address){
         _id = id;
         _name = name;
         _address = address;
+        _status = "Normal";
     }
 
     public void manageProductNotifications(String partnerId, String productId){
@@ -29,5 +34,25 @@ public class Partner implements Serializable {
 
     public String getAddress(){
         return _address;
+    }
+
+    public String getStatus() {
+        return _status;
+    }
+
+    public double getPoints() {
+        return _points;
+    }
+
+    public double getAcquisitionsValue() {
+        return _acquisitionsValue;
+    }
+
+    public double getEffectiveSalesValue() {
+        return _effectiveSalesValue;
+    }
+
+    public double getPaidSalesValue() {
+        return _paidSalesValue;
     }
 }
