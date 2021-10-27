@@ -6,19 +6,21 @@ import java.io.Serializable;
 
 public class Batch implements Serializable {
     private double _priceUnit;
-    private int _quantity;
+    private int _stock;
     private Partner _provider;
 
-    public Batch(){
-
+    public Batch(double price, int stock, Partner provider){
+        _priceUnit = price;
+        _stock = stock;
+        _provider = provider;
     }
 
     public double getPrice(){
         return _priceUnit;
     }
 
-    public int getQuantity(){
-        return _quantity;
+    public int getStock(){
+        return _stock;
     }
 
     public String toString(){
@@ -26,7 +28,8 @@ public class Batch implements Serializable {
     }
 
     public void deleteBatch() {
-        if (_quantity == 0) {}
+        if (_stock == 0) {}
             return;
     }
+
 }

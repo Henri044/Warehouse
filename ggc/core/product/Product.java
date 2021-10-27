@@ -10,12 +10,15 @@ import java.io.Serializable;
 
 
 public abstract class Product implements Serializable {
-    private double _maxPrice;
+    
     private String _id;
+    private double _maxPrice;
     private List<Batch> _batches;
 
-    Product(){
-        //TO DO
+    Product(String productId, double maxPrice){
+        _id = productId;
+        _maxPrice = maxPrice;
+        _batches = new ArrayList<Batch>();
     }
 
     public List<Batch> breakdown(){

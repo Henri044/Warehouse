@@ -5,6 +5,7 @@ package ggc.core;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import java.io.Serializable;
 import java.io.IOException;
@@ -17,6 +18,8 @@ import ggc.core.product.Product;
 import ggc.core.Partner;
 import ggc.core.Date;
 import ggc.core.Parser;
+import ggc.core.product.SimpleProduct;
+import ggc.core.product.AggregateProduct;
 
 /**
  * Class Warehouse implements a warehouse.
@@ -30,14 +33,18 @@ public class Warehouse implements Serializable {
   private HashMap<String, Partner> _partners;
   private float _balance;
   //private float _contabilisticBalance;
-  private List<Product> _products;
+  private HashMap<String, SimpleProduct> _simpleProducts;
+  private HashMap<String, AggregateProduct> _aggregateProducts;
+  private HashMap<String, LinkedList<Batch>> _batches;
 
   Warehouse() {
 
     _date = new Date();
     _nextTransictionId = 0;
     _partners = new HashMap<>();
-    _products = new ArrayList<>();
+    _simpleProducts = new HashMap<>();
+    _aggregateProducts = new HashMap<>();
+    _batches = new HashMap<String, LinkedList<Batch>>();
   }
 
   public int getDate() {
@@ -71,7 +78,53 @@ public class Warehouse implements Serializable {
 
     return (partner.getId() + "|" + partner.getName() + "|" + partner.getAddress() + "|" + partner.getStatus()
       + "|" + partner.getPoints() + "|" + partner.getAcquisitionsValue() + "|" + partner.getEffectiveSalesValue()
-      + "|" + partner.getPaidSalesValue() + "\n");
+      + "|" + partner.getPaidSalesValue());
+  }
+
+  public Partner getPartner(String id) {
+    return _partners.get(id);
+  }
+
+  public boolean hasSimpleProduct(String id) {
+    return _simpleProducts.containsKey(id);
+  }
+
+  public boolean hasAggregateProduct(String id) {
+    return _aggregateProducts.containsKey(id);
+  }
+
+  public SimpleProduct getSimpleProduct(String id) {
+    return _simpleProducts.get(id);
+  }
+
+  public AggregateProduct getAggregateProduct(String id) {
+    return _aggregateProducts.get(id);
+  }
+
+  public void registerSimpleProduct(String idProduct, double price) {
+    SimpleProduct newProduct = new SimpleProduct(idProduct, price);
+    _simpleProducts.put(idProduct, newProduct);
+    System.out.println("Adding product: " + idProduct + " " + price);
+  }
+
+  public void registerAggregateProduct(String idProduct, double price) {
+    AggregateProduct newProduct = new AggregateProduct(idProduct, price);
+    _aggregateProducts.put(idProduct, newProduct);
+  }
+
+  public void registerBatch(double price, int stock, Partner provider, String productId) {
+    Batch newBatch = new Batch(price, stock, provider);
+    System.out.println("Adding batch: " + price +" " + stock + " " + provider);
+
+    if (_batches.containsKey(productId)) {
+      LinkedList productBatches = _batches.get(productId);
+      productBatches.add(newBatch);
+    }
+    else {
+      LinkedList newProductBatches = new LinkedList<>();
+      newProductBatches.add(newBatch);
+      _batches.put(productId, newProductBatches);
+    }
   }
 
   /*

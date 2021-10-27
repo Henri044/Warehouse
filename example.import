@@ -1,3 +1,12 @@
-PARTNER|1|nome1|endereço1
-PARTNER|2|nome2|endereço2
-PARTNER|3|nome3|endereço3
+PARTNER|S1|Toshiba|Tokyo, Japan
+PARTNER|W2|Pedraria Fonseca|Oeiras, Portugal
+PARTNER|P1|Lages do Ch ̃ao|Lisboa, Portugal
+PARTNER|P3|O’Brian Rocks|K ̈oln, Germany
+PARTNER|R2|Jorge Figueiredo|Lisboa, Portugal
+PARTNER|E4|Filomena Figueiredo|Lisboa, Portugal
+PARTNER|ER|Abdul Figueiredo|Casablanca, Morocco
+PARTNER|O9|Hellen Figueiredo|San Francisco, CA, USA
+PARTNER|MM|John Figueiredo|Wellington, New Zealand
+PARTNER|M1|Rohit Figueiredo|New Delhi, India
+BATCH_S|HIDROGENIO|S1|200|5000
+BATCH_S|OXIGENIO|P1|1200|2500

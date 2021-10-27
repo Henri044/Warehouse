@@ -7,8 +7,8 @@ import java.io.Serializable;
 
 public class AggregateProduct extends Product implements Serializable {
     
-    public AggregateProduct(String id){
-        super(); //TO DO
+    public AggregateProduct(String productId, double maxPrice){
+        super(productId, maxPrice);
     }
 
     @Override

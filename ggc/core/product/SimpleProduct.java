@@ -7,8 +7,8 @@ import java.io.Serializable;
 
 public class SimpleProduct extends Product implements Serializable {
     
-    public SimpleProduct(String id) {
-        super(); //TO DO
+    public SimpleProduct(String productId, double maxPrice) {
+        super(productId, maxPrice);
     }
 
     public String toString(){

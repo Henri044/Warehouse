@@ -8,6 +8,11 @@ import java.io.Reader;
 
 import ggc.core.exception.BadEntryException;
 
+import ggc.core.product.SimpleProduct;
+import ggc.core.product.AggregateProduct;
+
+
+
 public class Parser {
 
   // It could be WarehouseManager too. Or something else.
@@ -64,7 +69,7 @@ public class Parser {
     }
   }
 
-  //BATCH_S|idProduto|idParceiro|prec ̧o|stock-actual
+  //BATCH_S|idProduto|idParceiro|preco|stock-actual
   private void parseSimpleProduct(String[] components, String line) throws BadEntryException {
     if (components.length != 5)
       throw new BadEntryException("Invalid number of fields (4) in simple batch description: " + line);
@@ -76,18 +81,24 @@ public class Parser {
     
     // add code here to do the following
     //if (!_store does not have product with idProduct)
-    //  register simple product with idProduct in _store;
+    if (!_store.hasSimpleProduct(idProduct)) {
+      //  register simple product with idProduct in _store;
+      _store.registerSimpleProduct(idProduct, price);
+    }
     
     // add code here 
     //Product product = get Product in _store with productId;
+    SimpleProduct product = _store.getSimpleProduct(idProduct);
     //Partner partner = get Partner in _store with partnerId;
+    Partner partner = _store.getPartner(idPartner);
 
     // add code here to
     // add batch with price, stock and partner to product
+    _store.registerBatch(price, stock, partner, idProduct);
   }
  
     
-  //BATCH_M|idProduto|idParceiro|prec ̧o|stock-actual|agravamento|componente-1:quantidade-1#...#componente-n:quantidade-n
+  //BATCH_M|idProduto|idParceiro|preco|stock-actual|agravamento|componente-1:quantidade-1#...#componente-n:quantidade-n
   private void parseAggregateProduct(String[] components, String line) throws BadEntryException {
     if (components.length != 7)
       throw new BadEntryException("Invalid number of fields (7) in aggregate batch description: " + line);
