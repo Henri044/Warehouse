@@ -155,11 +155,9 @@ public class WarehouseManager {
     } catch (NonExistentPartnerKeyException nepk) { throw nepk; }
   }
 
-  /*
   public String showPartners() {
-    _warehouse.showPartners();
+    return _warehouse.showPartners();
   }
-  */
 
   /*public int contabilisticBalance() {
     return _warehouse.getContabilisticBalance(); //definir metodo

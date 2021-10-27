@@ -105,6 +105,11 @@ public class Parser {
     
     String idProduct = components[1];
     String idPartner = components[2];
+    /*
+    double price = Double.parseDouble(components[3]);
+    int stock = Integer.parseInt(components[4]);
+    double aggravation = double.parseDouble(components[5]);
+    */
 
     // add code here to do the following
     /*
@@ -132,5 +137,19 @@ public class Parser {
     // add code here to
     // add batch with price, stock and partner to product
     */
+
+    /*
+    if (!_store.hasAggregateProduct(idProduct)) {
+      //adicionar o produto à lista de produtos
+      // VER DAS QUANTIDADES!!!
+    }
+    for (String  : components[6].split("#")) {
+      String[] recipeComponent = component.split(":");
+      //adicionar produtos à receita
+    }
+    // registar na warehouse o produto agregado
+    _store.registerAggregateProduct(idProduct, price); // falta o agravamento / receita;
+    */
+    
   }
 }

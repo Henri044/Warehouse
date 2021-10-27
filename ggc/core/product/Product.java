@@ -14,6 +14,7 @@ public abstract class Product implements Serializable {
     private String _id;
     private double _maxPrice;
     private List<Batch> _batches;
+    private int _totalStock;
 
     Product(String productId, double maxPrice){
         _id = productId;
@@ -35,4 +36,9 @@ public abstract class Product implements Serializable {
     }
 
     public abstract void checkQuantity(int quantity, Partner provider);
+
+    public void addStock(int quantity) {
+        _totalStock += quantity;
+    }
+
 }

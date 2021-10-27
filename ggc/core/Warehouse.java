@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Comparator;
+import java.util.Collection;
+import java.util.Collections;
 
 import java.io.Serializable;
 import java.io.IOException;
@@ -112,19 +115,57 @@ public class Warehouse implements Serializable {
     _aggregateProducts.put(idProduct, newProduct);
   }
 
-  public void registerBatch(double price, int stock, Partner provider, String productId) {
+  public void registerBatch(double price, int stock, Partner provider, String idProduct) {
     Batch newBatch = new Batch(price, stock, provider);
-    System.out.println("Adding batch: " + price +" " + stock + " " + provider);
+    System.out.println("Adding batch: " + price + " " + stock + " " + provider);
 
-    if (_batches.containsKey(productId)) {
-      LinkedList productBatches = _batches.get(productId);
+    if (_batches.containsKey(idProduct)) {
+      LinkedList productBatches = _batches.get(idProduct);
       productBatches.add(newBatch);
     }
     else {
       LinkedList newProductBatches = new LinkedList<>();
       newProductBatches.add(newBatch);
-      _batches.put(productId, newProductBatches);
+      _batches.put(idProduct, newProductBatches);
     }
+  }
+
+  public void addStock(String idProduct) {
+    //ADICIONA O FUCKING STOCK AO PRODUTO
+    //PROBLEMA: 2 LISTAS DIFERENTES (DERIVADOS + SIMPLES)
+  }
+
+  public class PartnersComparator implements Comparator<Partner>{
+
+    public int compare(Partner p1, Partner p2){
+
+      return p1.getId().compareTo(p2.getId());
+    }
+  }
+
+  public String showPartners() {
+    Collection<Partner> values = _partners.values();
+    List<Partner> unsortedPartners = new ArrayList<Partner>(values);
+    List<Partner> sortedPartners = new ArrayList<>(unsortedPartners);
+    String toPrint = new String();
+
+    Collections.sort(sortedPartners, new PartnersComparator());
+
+    for (int i = 0; i < sortedPartners.size(); i++) {
+      toPrint += (sortedPartners.get(i).getId() + "|" + sortedPartners.get(i).getName() + "|" + sortedPartners.get(i).getAddress() + "|" + sortedPartners.get(i).getStatus()
+      + "|" + sortedPartners.get(i).getPoints() + "|" + sortedPartners.get(i).getAcquisitionsValue() + "|" + sortedPartners.get(i).getEffectiveSalesValue()
+      + "|" + sortedPartners.get(i).getPaidSalesValue() + "\n"); 
+    }
+
+    toPrint = toPrint.substring(0, toPrint.length() - 1);
+
+    return toPrint;
+    /*
+    for (int i = 0; i < sortedPartners.size(); i++) {
+      sortedPartners.add(showPartner(sortedPartners.getId(i)) + "\n");
+    }
+    return sortedPartners;
+    */
   }
 
   /*
