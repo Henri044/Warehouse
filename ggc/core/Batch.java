@@ -35,7 +35,7 @@ public class Batch implements Serializable {
     } 
 
     public String toString() {
-        return (_product.getId() + "|" + _provider.getId() + "|" + _priceUnit + "|" + _stock);
+        return (_product.getId() + "|" + _provider.getId() + "|" + Math.round(_priceUnit) + "|" + _stock);
     }
 
     public void deleteBatch() {

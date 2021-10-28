@@ -124,11 +124,13 @@ public class Warehouse implements Serializable {
       ArrayList productBatches = _batches.get(idProduct);
       productBatches.add(newBatch);
       _batches.put(idProduct, productBatches);
+      _products.get(idProduct).setBatches(productBatches);
     }
     else {
       ArrayList newProductBatches = new ArrayList<>();
       newProductBatches.add(newBatch);
       _batches.put(idProduct, newProductBatches);
+      _products.get(idProduct).setBatches(newProductBatches);
     }
     Product currentProduct = _products.get(idProduct);
     currentProduct.addStock(stock);
@@ -169,7 +171,7 @@ public class Warehouse implements Serializable {
     }
   }
 
-  public String showPartners() {
+  public String allPartnersToString() {
     Collection<Partner> values = _partners.values();
     List<Partner> unsortedPartners = new ArrayList<Partner>(values);
     List<Partner> sortedPartners = new ArrayList<>(unsortedPartners);
@@ -188,28 +190,6 @@ public class Warehouse implements Serializable {
     return toPrint;
   }
 
-  public String allBatchesToString() {
-    ArrayList<Batch> batches = new ArrayList<>();
-    String toPrint = new String();
-
-    for (Product p : _products.values()) {
-      batches.addAll(p.getBatches());
-    }
-
-    Collections.sort(batches, new BatchSort());
-
-    for (Batch b : batches) {
-      toPrint += b.toString() + "\n";
-    }
-
-
-    if (!toPrint.isEmpty()) {
-      toPrint = toPrint.substring(0, toPrint.length() - 1);
-    }
-    
-    return toPrint;
-  }
-
   public class BatchSort implements Comparator<Batch> {
 
     public int compare(Batch b1, Batch b2) {
@@ -224,6 +204,29 @@ public class Warehouse implements Serializable {
         else if (comparePrice != 0) return comparePrice;
         else return compareQuantity;
     }
+  }
+
+  public String allBatchesToString() {
+    ArrayList<Batch> batches = new ArrayList<>();
+    String toPrint = new String();
+
+    for (Product p : _products.values()) {
+      batches.addAll(p.getBatches());
+    }
+
+    Collections.sort(batches, new BatchSort());
+    //System.out.println("a");
+
+    for (Batch b : batches) {
+      toPrint += b.toString() + "\n";
+    }
+
+
+    if (!toPrint.isEmpty()) {
+      toPrint = toPrint.substring(0, toPrint.length() - 1);
+    }
+    
+    return toPrint;
   }
 
   // FIXME define attributes

@@ -155,8 +155,8 @@ public class WarehouseManager {
     } catch (NonExistentPartnerKeyException nepk) { throw nepk; }
   }
 
-  public String showPartners() {
-    return _warehouse.showPartners();
+  public String allPartnersToString() {
+    return _warehouse.allPartnersToString();
   }
 
   public String allProductsToString() {

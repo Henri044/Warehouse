@@ -35,6 +35,10 @@ public abstract class Product implements Serializable {
         return _batches;
     }
 
+    public void setBatches(ArrayList<Batch> batches) {
+        _batches = batches;
+    }
+
     public String getId() {
         return _id;
     }
