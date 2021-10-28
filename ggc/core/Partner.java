@@ -17,7 +17,7 @@ public class Partner implements Serializable {
         _id = id;
         _name = name;
         _address = address;
-        _status = "Normal";
+        _status = "NORMAL";
     }
 
     public void manageProductNotifications(String partnerId, String productId){
@@ -54,5 +54,10 @@ public class Partner implements Serializable {
 
     public double getPaidSalesValue() {
         return _paidSalesValue;
+    }
+
+    public String toString() {
+        return (_id + "|" + _name + "|" + _address + "|" + _status + "|" + Math.round(_points) +
+         "|" + Math.round(_acquisitionsValue) + "|" + Math.round(_effectiveSalesValue) + "|" + Math.round(_paidSalesValue));
     }
 }

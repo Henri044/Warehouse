@@ -5,7 +5,6 @@ package ggc.core;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Comparator;
 import java.util.Collection;
 import java.util.Collections;
@@ -36,18 +35,20 @@ public class Warehouse implements Serializable {
   private HashMap<String, Partner> _partners;
   private float _balance;
   //private float _contabilisticBalance;
-  private HashMap<String, SimpleProduct> _simpleProducts;
-  private HashMap<String, AggregateProduct> _aggregateProducts;
-  private HashMap<String, LinkedList<Batch>> _batches;
+  //private HashMap<String, SimpleProduct> _simpleProducts;
+  //private HashMap<String, AggregateProduct> _aggregateProducts;
+  private HashMap<String, ArrayList<Batch>> _batches;
+  private HashMap<String, Product> _products;
 
   Warehouse() {
 
     _date = new Date();
     _nextTransictionId = 0;
     _partners = new HashMap<>();
-    _simpleProducts = new HashMap<>();
-    _aggregateProducts = new HashMap<>();
-    _batches = new HashMap<String, LinkedList<Batch>>();
+    //_simpleProducts = new HashMap<>();
+    //_aggregateProducts = new HashMap<>();
+    _products = new HashMap<String, Product>();
+    _batches = new HashMap<String, ArrayList<Batch>>();
   }
 
   public int getDate() {
@@ -79,63 +80,88 @@ public class Warehouse implements Serializable {
 
     Partner partner = _partners.get(id);
 
-    return (partner.getId() + "|" + partner.getName() + "|" + partner.getAddress() + "|" + partner.getStatus()
-      + "|" + partner.getPoints() + "|" + partner.getAcquisitionsValue() + "|" + partner.getEffectiveSalesValue()
-      + "|" + partner.getPaidSalesValue());
+    return partner.toString();
   }
 
   public Partner getPartner(String id) {
     return _partners.get(id);
   }
 
-  public boolean hasSimpleProduct(String id) {
-    return _simpleProducts.containsKey(id);
+  public boolean hasProduct(String id) {
+    return _products.containsKey(id);
   }
 
-  public boolean hasAggregateProduct(String id) {
-    return _aggregateProducts.containsKey(id);
-  }
-
-  public SimpleProduct getSimpleProduct(String id) {
-    return _simpleProducts.get(id);
-  }
-
-  public AggregateProduct getAggregateProduct(String id) {
-    return _aggregateProducts.get(id);
+  public Product getProduct(String id) {
+    return _products.get(id);
   }
 
   public void registerSimpleProduct(String idProduct, double price) {
     SimpleProduct newProduct = new SimpleProduct(idProduct, price);
-    _simpleProducts.put(idProduct, newProduct);
-    System.out.println("Adding product: " + idProduct + " " + price);
+    _products.put(idProduct, newProduct);
   }
 
-  public void registerAggregateProduct(String idProduct, double price) {
-    AggregateProduct newProduct = new AggregateProduct(idProduct, price);
-    _aggregateProducts.put(idProduct, newProduct);
+  public void registerAggregateProduct(String idProduct, double price, Recipe recipe) {
+    AggregateProduct newProduct = new AggregateProduct(idProduct, price, recipe);
+    _products.put(idProduct, newProduct);
   }
 
-  public void registerBatch(double price, int stock, Partner provider, String idProduct) {
-    Batch newBatch = new Batch(price, stock, provider);
-    System.out.println("Adding batch: " + price + " " + stock + " " + provider);
+  public int getTotalStock(String idProduct) {
+
+    int totalStock = 0;
+    ArrayList<Batch> productBatches = _batches.get(idProduct);
+
+    for (int i = 0; i < productBatches.size(); i++) {
+      totalStock += productBatches.get(i).getStock();
+    }
+
+    return totalStock;
+  }
+
+  public void registerBatch(double price, int stock, Partner partner, String idProduct) {
+    Batch newBatch = new Batch(price, stock, partner, _products.get(idProduct));
 
     if (_batches.containsKey(idProduct)) {
-      LinkedList productBatches = _batches.get(idProduct);
+      ArrayList productBatches = _batches.get(idProduct);
       productBatches.add(newBatch);
+      _batches.put(idProduct, productBatches);
     }
     else {
-      LinkedList newProductBatches = new LinkedList<>();
+      ArrayList newProductBatches = new ArrayList<>();
       newProductBatches.add(newBatch);
       _batches.put(idProduct, newProductBatches);
     }
+    Product currentProduct = _products.get(idProduct);
+    currentProduct.addStock(stock);
   }
 
-  public void addStock(String idProduct) {
-    //ADICIONA O FUCKING STOCK AO PRODUTO
-    //PROBLEMA: 2 LISTAS DIFERENTES (DERIVADOS + SIMPLES)
+  public class ProductsComparator implements Comparator<Product> {
+
+    public int compare(Product p1, Product p2){
+
+      return p1.getId().compareTo(p2.getId());
+    }
   }
 
-  public class PartnersComparator implements Comparator<Partner>{
+  public String allProductsToString() {
+    Collection<Product> values = _products.values();
+    List<Product> unsortedProducts = new ArrayList<Product>(values);
+    List<Product> sortedProducts = new ArrayList<>(unsortedProducts);
+    String toPrint = new String();
+
+    Collections.sort(sortedProducts, new ProductsComparator());
+
+    for (Product p : sortedProducts) {
+      toPrint += p.toString() + "\n";
+    }
+
+    if (!toPrint.isEmpty()) {
+      toPrint = toPrint.substring(0, toPrint.length() - 1);
+    }
+
+    return toPrint;
+  }
+
+  public class PartnersComparator implements Comparator<Partner> {
 
     public int compare(Partner p1, Partner p2){
 
@@ -152,42 +178,53 @@ public class Warehouse implements Serializable {
     Collections.sort(sortedPartners, new PartnersComparator());
 
     for (int i = 0; i < sortedPartners.size(); i++) {
-      toPrint += (sortedPartners.get(i).getId() + "|" + sortedPartners.get(i).getName() + "|" + sortedPartners.get(i).getAddress() + "|" + sortedPartners.get(i).getStatus()
-      + "|" + sortedPartners.get(i).getPoints() + "|" + sortedPartners.get(i).getAcquisitionsValue() + "|" + sortedPartners.get(i).getEffectiveSalesValue()
-      + "|" + sortedPartners.get(i).getPaidSalesValue() + "\n"); 
+      toPrint += sortedPartners.get(i).toString() + "\n";
     }
 
-    toPrint = toPrint.substring(0, toPrint.length() - 1);
-
+    if (!toPrint.isEmpty()) {
+      toPrint = toPrint.substring(0, toPrint.length() - 1);
+    }
+  
     return toPrint;
-    /*
-    for (int i = 0; i < sortedPartners.size(); i++) {
-      sortedPartners.add(showPartner(sortedPartners.getId(i)) + "\n");
-    }
-    return sortedPartners;
-    */
   }
 
-  /*
-  public String showPartners {
-    Set<String> unsortedPartnersId = new HashSet<>();
+  public String allBatchesToString() {
+    ArrayList<Batch> batches = new ArrayList<>();
+    String toPrint = new String();
 
-    unsortedPartnersId = _partners.keySet();
-
-    List<String> sortedPartnersId = new ArrayList<String>(unsortedPartnersId);
-
-    Collections.sort(sortedPartnersId);
-
-    List<String> sortedPartners = new ArrayList<>();
-
-    for (int i = 0; i < sortedPartnersId.size(); i++) {
-      sortedPartners.add(showPartner(sortedPartnersId.get()) + "\n");
+    for (Product p : _products.values()) {
+      batches.addAll(p.getBatches());
     }
 
-    return sortedPartners;
-  }
-  */
+    Collections.sort(batches, new BatchSort());
 
+    for (Batch b : batches) {
+      toPrint += b.toString() + "\n";
+    }
+
+
+    if (!toPrint.isEmpty()) {
+      toPrint = toPrint.substring(0, toPrint.length() - 1);
+    }
+    
+    return toPrint;
+  }
+
+  public class BatchSort implements Comparator<Batch> {
+
+    public int compare(Batch b1, Batch b2) {
+        int compareProductId = b1.getProduct().getId().compareTo(b2.getProduct().getId());
+        int comparePartnerId = b1.getProvider().getId().compareTo(b2.getProvider().getId());
+        int comparePrice = String.valueOf(b1.getPrice()).compareTo(String.valueOf(b2.getPrice()));
+        int compareQuantity = String.valueOf(b1.getStock()).compareTo(String.valueOf(b2.getStock()));
+
+
+        if (compareProductId != 0) return compareProductId;
+        else if (comparePartnerId != 0) return comparePartnerId;
+        else if (comparePrice != 0) return comparePrice;
+        else return compareQuantity;
+    }
+  }
 
   // FIXME define attributes
   // FIXME define contructor(s)

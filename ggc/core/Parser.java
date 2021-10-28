@@ -8,8 +8,11 @@ import java.io.Reader;
 
 import ggc.core.exception.BadEntryException;
 
+import ggc.core.product.Product;
 import ggc.core.product.SimpleProduct;
 import ggc.core.product.AggregateProduct;
+
+import java.util.ArrayList;
 
 
 
@@ -38,6 +41,7 @@ public class Parser {
       case "PARTNER":
         parsePartner(components, line);
         break;
+        
       case "BATCH_S":
         parseSimpleProduct(components, line);
         break;
@@ -81,14 +85,14 @@ public class Parser {
     
     // add code here to do the following
     //if (!_store does not have product with idProduct)
-    if (!_store.hasSimpleProduct(idProduct)) {
+    if (!_store.hasProduct(idProduct)) {
       //  register simple product with idProduct in _store;
       _store.registerSimpleProduct(idProduct, price);
     }
     
     // add code here 
     //Product product = get Product in _store with productId;
-    SimpleProduct product = _store.getSimpleProduct(idProduct);
+    Product product = _store.getProduct(idProduct);
     //Partner partner = get Partner in _store with partnerId;
     Partner partner = _store.getPartner(idPartner);
 
@@ -105,11 +109,36 @@ public class Parser {
     
     String idProduct = components[1];
     String idPartner = components[2];
-    /*
     double price = Double.parseDouble(components[3]);
     int stock = Integer.parseInt(components[4]);
-    double aggravation = double.parseDouble(components[5]);
-    */
+    double alpha = Double.parseDouble(components[5]);
+
+    if (!_store.hasProduct(idProduct)) {
+      ArrayList<Product> products = new ArrayList<>();
+      ArrayList<Integer> quantities = new ArrayList<>();
+
+      for (String component : components[6].split("#")) {
+        String[] recipeComponent = component.split(":"); //ASK PROF SE OS COMPONENTES NECESSARIO PARA O DERIVADO ASSUMIMOS QUE JÁ EXISTEM
+        //PRODUTOS DERIVADOS PODEM DERIVAR DE OUTROS DERIVADOS?
+        products.add(_store.getProduct(recipeComponent[0]));
+        quantities.add(Integer.parseInt(recipeComponent[1]));
+      }
+
+      Recipe recipe = new Recipe(alpha, products, quantities);
+
+      if (!_store.hasProduct(idProduct)) {
+        _store.registerAggregateProduct(idProduct, price, recipe);
+      }
+
+      // add code here 
+      //Product product = get Product in _store with productId;
+      Product product = _store.getProduct(idProduct);
+      //Partner partner = get Partner in _store with partnerId;
+      Partner partner = _store.getPartner(idPartner);
+
+      _store.registerBatch(price, stock, partner, idProduct);
+
+    }
 
     // add code here to do the following
     /*

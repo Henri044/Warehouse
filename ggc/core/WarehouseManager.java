@@ -159,6 +159,14 @@ public class WarehouseManager {
     return _warehouse.showPartners();
   }
 
+  public String allProductsToString() {
+    return _warehouse.allProductsToString();
+  }
+
+  public String allBatchesToString() {
+    return _warehouse.allBatchesToString();
+  }
+
   /*public int contabilisticBalance() {
     return _warehouse.getContabilisticBalance(); //definir metodo
   }*/

@@ -11,12 +11,14 @@ public class SimpleProduct extends Product implements Serializable {
         super(productId, maxPrice);
     }
 
-    public String toString(){
-        return ""; //TO DO
-    }
-
     @Override
     public void checkQuantity(int quantity, Partner provider){
 
     }
+
+    @Override
+    public String toString(){
+        return (getId() + "|" + Math.round(getPrice()) + "|" + getTotalStock());
+    }
+
 }

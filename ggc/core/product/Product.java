@@ -1,6 +1,5 @@
 package ggc.core.product;
 
-import java.util.List;
 import java.util.ArrayList;
 
 import ggc.core.Batch;
@@ -13,7 +12,7 @@ public abstract class Product implements Serializable {
     
     private String _id;
     private double _maxPrice;
-    private List<Batch> _batches;
+    private ArrayList<Batch> _batches;
     private int _totalStock;
 
     Product(String productId, double maxPrice){
@@ -22,23 +21,34 @@ public abstract class Product implements Serializable {
         _batches = new ArrayList<Batch>();
     }
 
-    public List<Batch> breakdown(){
-        _batches = new ArrayList<>();
-        return _batches; //TO DO
-    }
+    // public List<Batch> breakdown() {}
 
-    public String getBatchesBelowLimit(int value){
+    public String getBatchesBelowLimit(int value) {
         return ""; //TO DO
     }
 
-    public String toString(){
-        return ""; //TO DO
+    public int getTotalStock() {
+        return _totalStock;
     }
 
-    public abstract void checkQuantity(int quantity, Partner provider);
+    public ArrayList<Batch> getBatches() {
+        return _batches;
+    }
+
+    public String getId() {
+        return _id;
+    }
+
+    public double getPrice() {
+        return _maxPrice;
+    }
 
     public void addStock(int quantity) {
         _totalStock += quantity;
     }
+
+    public abstract String toString();
+
+    public abstract void checkQuantity(int quantity, Partner provider);
 
 }
