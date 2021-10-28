@@ -26,7 +26,6 @@ public class WarehouseManager {
   /** Name of file storing current warehouse. */
   private String _filename = "";
   private String _loadFile = new String();
-  private boolean _changed = true;
 
   /** The warehouse itself. */
   private Warehouse _warehouse = new Warehouse();
@@ -53,26 +52,22 @@ public class WarehouseManager {
     catch (IOException e) { throw e; }
 
     _loadFile = _filename;
-    _changed = true;
   }
 
   public void save() throws IOException, FileNotFoundException, MissingFileAssociationException {
     //FIXME implement serialization method
-    if (_changed) {
-      if (!hasLoadFile())
-        setLoadFile(_filename);
-      try {
-        ObjectOutputStream oos = new ObjectOutputStream(
-          new BufferedOutputStream(
-            new FileOutputStream(getLoadFile())));
-        oos.writeObject(_warehouse);
-        oos.close();
-      }
-      catch (FileNotFoundException fnfe) { throw fnfe; }
-      catch (IOException e) { throw e; }
-      _changed = false;
+    if (!hasLoadFile())
+      setLoadFile(_filename);
+    try {
+      ObjectOutputStream oos = new ObjectOutputStream(
+        new BufferedOutputStream(
+          new FileOutputStream(getLoadFile())));
+      oos.writeObject(_warehouse);
+      oos.close();
     }
-  }
+    catch (FileNotFoundException fnfe) { throw fnfe; }
+    catch (IOException e) { throw e; }
+}
 
   /**
    * @@param filename

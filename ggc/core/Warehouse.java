@@ -68,23 +68,23 @@ public class Warehouse implements Serializable {
   public void registerPartner(String id, String name, String address) throws SamePartnerKeyException{
     Partner newPartner = new Partner(id, name, address);
 
-    if (_partners.containsKey(id))
+    if (_partners.containsKey(id.toLowerCase()))
       throw new SamePartnerKeyException();
 
-    _partners.put(id, newPartner);
+    _partners.put(id.toLowerCase(), newPartner);
   }
 
   public String showPartner(String id) throws NonExistentPartnerKeyException {
-    if (!_partners.containsKey(id))
+    if (!_partners.containsKey(id.toLowerCase()))
       throw new NonExistentPartnerKeyException();
 
-    Partner partner = _partners.get(id);
+    Partner partner = _partners.get(id.toLowerCase());
 
     return partner.toString();
   }
 
   public Partner getPartner(String id) {
-    return _partners.get(id);
+    return _partners.get(id.toLowerCase());
   }
 
   public boolean hasProduct(String id) {
@@ -121,13 +121,13 @@ public class Warehouse implements Serializable {
     Batch newBatch = new Batch(price, stock, partner, _products.get(idProduct));
 
     if (_batches.containsKey(idProduct)) {
-      ArrayList productBatches = _batches.get(idProduct);
+      ArrayList<Batch> productBatches = _batches.get(idProduct);
       productBatches.add(newBatch);
       _batches.put(idProduct, productBatches);
       _products.get(idProduct).setBatches(productBatches);
     }
     else {
-      ArrayList newProductBatches = new ArrayList<>();
+      ArrayList<Batch> newProductBatches = new ArrayList<Batch>();
       newProductBatches.add(newBatch);
       _batches.put(idProduct, newProductBatches);
       _products.get(idProduct).setBatches(newProductBatches);
