@@ -6,10 +6,15 @@ import ggc.core.product.Product;
 import java.io.Serializable;
 
 public class Batch implements Serializable {
+
+    // ATRIBUTES
+
     private double _priceUnit;
     private int _stock;
     private Partner _provider;
     private Product _product;
+
+    // CONSTRUCTOR
 
     public Batch(double price, int stock, Partner provider, Product product) {
         _priceUnit = price;
@@ -18,29 +23,53 @@ public class Batch implements Serializable {
         _product = product;
     }
 
-    public Product getProduct() {
-        return _product;
-    }
+    /**
+    * Gets the Price of the Batch.
+    *
+    * @return the Price of the Batch.
+    */
 
     public double getPrice() {
         return _priceUnit;
     }
 
+    /**
+    * Gets the Stock of a Batch.
+    *
+    * @return the Stock of the Batch.
+    */
+
     public int getStock() {
         return _stock;
     }
 
+    /**
+    * Gets the Product releated to the Batch.
+    *
+    * @return the Product related to the Batch.
+    */
+
+    public Product getProduct() {
+        return _product;
+    }
+
+    /**
+    * Gets the Partner related to the Batch.
+    *
+    * @return the Partner related to the Batch.
+    */
+
     public Partner getProvider() {
         return _provider;
-    } 
+    }
+
+    /**
+    * Returns what should be displayed on the App.
+    *
+    * @return a String with what should be displayed.
+    */
 
     public String toString() {
         return (_product.getId() + "|" + _provider.getId() + "|" + Math.round(_priceUnit) + "|" + _stock);
     }
-
-    public void deleteBatch() {
-        if (_stock == 0) {}
-            return;
-    }
-
 }

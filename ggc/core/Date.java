@@ -7,11 +7,11 @@ import java.io.Serializable;
 public class Date implements Serializable {
    private int _days;
    
-   public Date(){
+   public Date() {
       _days = 0;
    }
 
-   public int getDays(){//?
+   public int getDays() {
       return _days;
    }
 
@@ -22,11 +22,11 @@ public class Date implements Serializable {
       return this;
    }
 
-   public int difference(Date other){
-      return (_days -= other.getDays());//?
+   public int difference(Date other) {
+      return (_days -= other.getDays());
    }
 
    public Date now() {
-       return this; // ASK PROF STATIC???
+       return this; 
    }
 }

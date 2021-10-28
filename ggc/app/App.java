@@ -5,10 +5,8 @@ import pt.tecnico.uilib.menus.Menu;
 import ggc.core.WarehouseManager;
 import ggc.core.exception.ImportFileException;
 
-/** Main driver for the management application. */
 public class App {
 
-  /** @param args command line arguments. */
   public static void main(String[] args) {
     try (var ui = Dialog.UI) {
       WarehouseManager manager = new WarehouseManager();

@@ -31,7 +31,7 @@ class DoShowPartner extends Command<WarehouseManager> {
     _key = stringField("key");
 
     try {
-      String partner = _receiver.showPartner(_key);
+      String partner = _receiver.partnerToString(_key);
       _display.addLine(partner);
       _display.display();
 

@@ -7,13 +7,13 @@ import ggc.core.product.Product;
 public class Recipe {
 
     private double _alpha;
-    private ArrayList<Product> _products = new ArrayList<Product>();
-    private ArrayList<Integer> _quantities = new ArrayList<Integer>();
+    private ArrayList<Product> _products;
+    private ArrayList<Integer> _quantities;
 
     public Recipe(double alpha, ArrayList<Product> products, ArrayList<Integer> quantities) {
         _alpha = alpha;
-        _products = (ArrayList<Product>)products.clone();
-        _quantities = (ArrayList<Integer>)quantities.clone();
+        _products = new ArrayList<Product>(products);
+        _quantities = new ArrayList<Integer>(quantities);
     }
 
     public String toString(){

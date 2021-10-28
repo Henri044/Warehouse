@@ -8,7 +8,11 @@ import java.io.Serializable;
 
 public class AggregateProduct extends Product implements Serializable {
 
+    // ATRIBUTES
+
     Recipe _recipe;
+
+    // CONSTRUCTOR
     
     public AggregateProduct(String productId, double maxPrice, Recipe recipe){
         super(productId, maxPrice);
@@ -20,8 +24,14 @@ public class AggregateProduct extends Product implements Serializable {
         return; //TO DO
     }
 
+    /**
+    * Returns what should be displayed on the App.
+    *
+    * @return a String with what should be displayed.
+    */
+
     @Override
-    public String toString(){
+    public String toString() {
         return (getId() + "|" + Math.round(getPrice()) + "|" + getTotalStock() + "|" + _recipe.toString());
     }
 }
