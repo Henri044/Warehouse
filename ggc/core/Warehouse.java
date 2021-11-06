@@ -30,9 +30,6 @@ public class Warehouse implements Serializable {
     private HashMap<String, Partner> _partners;
     private float _balance;
     //private float _contabilisticBalance;
-    //private HashMap<String, SimpleProduct> _simpleProducts;
-    //private HashMap<String, AggregateProduct> _aggregateProducts;
-    private HashMap<String, ArrayList<Batch>> _batches;
     private HashMap<String, Product> _products;
 
     Warehouse() {
@@ -40,10 +37,7 @@ public class Warehouse implements Serializable {
         _date = new Date();
         _nextTransictionId = 0;
         _partners = new HashMap<>();
-        //_simpleProducts = new HashMap<>();
-        //_aggregateProducts = new HashMap<>();
         _products = new HashMap<String, Product>();
-        _batches = new HashMap<String, ArrayList<Batch>>();
     }
 
     public int getDate() {
@@ -103,26 +97,30 @@ public class Warehouse implements Serializable {
     public void registerBatch(double price, int stock, Partner partner, String idProduct) {
         Batch newBatch = new Batch(price, stock, partner, _products.get(idProduct));
 
-        if (_batches.containsKey(idProduct)) {
-            ArrayList<Batch> productBatches = _batches.get(idProduct);
+        if ((_products.get(idProduct).getBatches()).size() != 0) {
+            ArrayList<Batch> productBatches = _products.get(idProduct).getBatches();
             productBatches.add(newBatch);
-            _batches.put(idProduct, productBatches);
             _products.get(idProduct).setBatches(productBatches);
         }
+
         else {
             ArrayList<Batch> newProductBatches = new ArrayList<Batch>();
             newProductBatches.add(newBatch);
-            _batches.put(idProduct, newProductBatches);
             _products.get(idProduct).setBatches(newProductBatches);
         }
+
         Product currentProduct = _products.get(idProduct);
         currentProduct.addStock(stock);
+
+        if (price > _products.get(idProduct).getPrice()) {
+            _products.get(idProduct).setMaxPrice(price);
+        }
     }
 
     public class ProductsComparator implements Comparator<Product> {
 
         public int compare(Product p1, Product p2){
-            return p1.getId().compareTo(p2.getId());
+            return p1.getId().toLowerCase().compareTo(p2.getId().toLowerCase());
         }
     }
 
@@ -148,7 +146,7 @@ public class Warehouse implements Serializable {
     public class PartnersComparator implements Comparator<Partner> {
 
         public int compare(Partner p1, Partner p2){
-            return p1.getId().compareTo(p2.getId());
+            return p1.getId().toLowerCase().compareTo(p2.getId().toLowerCase());
         }
     }
 
@@ -176,8 +174,8 @@ public class Warehouse implements Serializable {
         public int compare(Batch b1, Batch b2) {
             int compareProductId = b1.getProduct().getId().compareTo(b2.getProduct().getId());
             int comparePartnerId = b1.getProvider().getId().compareTo(b2.getProvider().getId());
-            int comparePrice = String.valueOf(b1.getPrice()).compareTo(String.valueOf(b2.getPrice()));
-            int compareQuantity = String.valueOf(b1.getStock()).compareTo(String.valueOf(b2.getStock()));
+            int comparePrice = b1.getPrice().compareTo(b2.getPrice());
+            int compareQuantity = b1.getStock().compareTo(b2.getStock());
 
             if (compareProductId != 0) {
                 return compareProductId;

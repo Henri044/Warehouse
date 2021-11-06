@@ -29,7 +29,7 @@ public class Batch implements Serializable {
     * @return the Price of the Batch.
     */
 
-    public double getPrice() {
+    public Double getPrice() {
         return _priceUnit;
     }
 
@@ -39,7 +39,7 @@ public class Batch implements Serializable {
     * @return the Stock of the Batch.
     */
 
-    public int getStock() {
+    public Integer getStock() {
         return _stock;
     }
 

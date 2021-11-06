@@ -90,6 +90,10 @@ public abstract class Product implements Serializable {
         _batches = batches;
     }
 
+    public void setMaxPrice(double maxPrice) {
+        _maxPrice = maxPrice;
+    }
+
     /**
     * Abstract Method.
     * Returns what should be displayed on the App.
