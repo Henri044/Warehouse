@@ -17,6 +17,7 @@ import ggc.core.exception.MissingFileAssociationException;
 import ggc.core.exception.NonPositiveDateException;
 import ggc.core.exception.SamePartnerKeyException;
 import ggc.core.exception.NonExistentPartnerKeyException;
+import ggc.core.exception.NonExistentProductKeyException;
 
 
 public class WarehouseManager {
@@ -103,8 +104,12 @@ public class WarehouseManager {
         } catch (NonPositiveDateException ide) { throw ide; }
     }
 
-    public int currentBalance() {
+    public double getBalance() {
         return _warehouse.getBalance();
+    }
+
+    public double getAccountingBalance() {
+        return _warehouse.getAccountingBalance();
     }
 
     public void registerPartner(String id, String name, String address) throws SamePartnerKeyException {
@@ -131,11 +136,19 @@ public class WarehouseManager {
         return _warehouse.allBatchesToString();
     }
 
-    /*public int contabilisticBalance() {
-        return _warehouse.getContabilisticBalance(); //definir metodo
-    }*/
+    public String batchesByProductToString(String idProduct) throws NonExistentProductKeyException {
+        try {
+            return _warehouse.batchesByProductToString(idProduct);
+        } catch (NonExistentProductKeyException neprke) { throw neprke; }
+    }
 
-    /*public String getAllProducts() {
-        return _warehouse.getAllProducts(); // definir metodo
-    }*/
+    public String batchesByPartnerToString(String id) throws NonExistentPartnerKeyException {
+        try {
+            return _warehouse.batchesByPartnerToString(id); 
+        } catch (NonExistentPartnerKeyException nepk) { throw nepk; }
+    }
+
+    public String batchesBelowLimitToString(int limit) {
+        return _warehouse.batchesBelowLimitToString(limit);
+    }
 }

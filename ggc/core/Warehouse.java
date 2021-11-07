@@ -14,6 +14,7 @@ import ggc.core.exception.BadEntryException;
 import ggc.core.exception.NonPositiveDateException;
 import ggc.core.exception.SamePartnerKeyException;
 import ggc.core.exception.NonExistentPartnerKeyException;
+import ggc.core.exception.NonExistentProductKeyException;
 import ggc.core.product.Product;
 import ggc.core.Partner;
 import ggc.core.Date;
@@ -26,16 +27,16 @@ public class Warehouse implements Serializable {
     /** Serial number for serialization. */
     private static final long serialVersionUID = 202109192006L;
     private Date _date;
-    private int _nextTransictionId;
+    private int _nextTransactionId;
     private HashMap<String, Partner> _partners;
-    private float _balance;
-    //private float _contabilisticBalance;
+    private double _balance;
+    private double _accountingBalance;
     private HashMap<String, Product> _products;
 
     Warehouse() {
 
         _date = new Date();
-        _nextTransictionId = 0;
+        _nextTransactionId = 0;
         _partners = new HashMap<>();
         _products = new HashMap<String, Product>();
     }
@@ -50,8 +51,12 @@ public class Warehouse implements Serializable {
         } catch (NonPositiveDateException ide) { throw ide; }
     }
 
-    public int getBalance() {
-        return (int)_balance;
+    public double getBalance() {
+        return _balance;
+    }
+
+    public double getAccountingBalance() {
+        return _accountingBalance;
     }
 
     public void registerPartner(String id, String name, String address) throws SamePartnerKeyException{
@@ -77,44 +82,122 @@ public class Warehouse implements Serializable {
     }
 
     public boolean hasProduct(String id) {
-        return _products.containsKey(id);
+        return _products.containsKey(id.toLowerCase());
     }
 
     public Product getProduct(String id) {
-        return _products.get(id);
+        return _products.get(id.toLowerCase());
     }
 
     public void registerSimpleProduct(String idProduct, double price) {
         SimpleProduct newProduct = new SimpleProduct(idProduct, price);
-        _products.put(idProduct, newProduct);
+        _products.put(idProduct.toLowerCase(), newProduct);
     }
 
     public void registerAggregateProduct(String idProduct, double price, Recipe recipe) {
         AggregateProduct newProduct = new AggregateProduct(idProduct, price, recipe);
-        _products.put(idProduct, newProduct);
+        _products.put(idProduct.toLowerCase(), newProduct);
     }
 
     public void registerBatch(double price, int stock, Partner partner, String idProduct) {
-        Batch newBatch = new Batch(price, stock, partner, _products.get(idProduct));
+        Batch newBatch = new Batch(price, stock, partner, _products.get(idProduct.toLowerCase()));
 
-        if ((_products.get(idProduct).getBatches()).size() != 0) {
-            ArrayList<Batch> productBatches = _products.get(idProduct).getBatches();
+        if ((_products.get(idProduct.toLowerCase()).getBatches()).size() != 0) {
+            ArrayList<Batch> productBatches = _products.get(idProduct.toLowerCase()).getBatches();
             productBatches.add(newBatch);
-            _products.get(idProduct).setBatches(productBatches);
+            _products.get(idProduct.toLowerCase()).setBatches(productBatches);
         }
 
         else {
             ArrayList<Batch> newProductBatches = new ArrayList<Batch>();
             newProductBatches.add(newBatch);
-            _products.get(idProduct).setBatches(newProductBatches);
+            _products.get(idProduct.toLowerCase()).setBatches(newProductBatches);
         }
 
-        Product currentProduct = _products.get(idProduct);
+        Product currentProduct = _products.get(idProduct.toLowerCase());
         currentProduct.addStock(stock);
 
-        if (price > _products.get(idProduct).getPrice()) {
-            _products.get(idProduct).setMaxPrice(price);
+        if (price > _products.get(idProduct.toLowerCase()).getPrice()) {
+            _products.get(idProduct.toLowerCase()).setMaxPrice(price);
         }
+    }
+
+    public String batchesByPartnerToString(String idPartner) throws NonExistentPartnerKeyException {
+        ArrayList<Batch> batchesByPartner = new ArrayList<>();
+        ArrayList<Batch> batches = new ArrayList<>();
+        String toPrint = new String();
+
+        if (!_partners.containsKey(idPartner.toLowerCase()))
+            throw new NonExistentPartnerKeyException();
+
+        for (Product p : _products.values()) {
+            batches.addAll(p.getBatches());
+        }
+
+        for (Batch b: batches) {
+            if ((b.getProvider()).getId().toLowerCase().equals(idPartner.toLowerCase()))
+                batchesByPartner.add(b);
+        }
+
+        Collections.sort(batchesByPartner, new BatchComparator());
+
+        for (Batch b: batchesByPartner) {
+            toPrint += b.toString() + "\n";
+        }
+
+        if (!toPrint.isEmpty()) {
+            toPrint = toPrint.substring(0, toPrint.length() - 1);
+        }
+
+        return toPrint;
+    }
+
+    public String batchesByProductToString(String idProduct) throws NonExistentProductKeyException {
+        if (!_products.containsKey(idProduct.toLowerCase()))
+            throw new NonExistentProductKeyException();
+
+        String toPrint = new String();
+
+        ArrayList<Batch> batches = _products.get(idProduct.toLowerCase()).getBatches();
+
+        Collections.sort(batches, new BatchComparator());
+
+        for (Batch b : batches) {
+            toPrint += b.toString() + "\n";
+        }
+
+        if (!toPrint.isEmpty()) {
+            toPrint = toPrint.substring(0, toPrint.length() - 1);
+        }
+
+        return toPrint;
+    }
+
+    public String batchesBelowLimitToString(int limit) {
+        ArrayList<Batch> batches = new ArrayList<>();
+        ArrayList<Batch> batchesBelowLimit = new ArrayList<>();
+        String toPrint = new String();
+
+        for (Product p : _products.values()) {
+            batches.addAll(p.getBatches());
+        }
+
+        for (Batch b : batches) {
+            if (b.getPrice() < limit)
+                batchesBelowLimit.add(b);
+        }
+
+        Collections.sort(batchesBelowLimit, new BatchComparator());
+
+        for (Batch b : batchesBelowLimit) {
+            toPrint += b.toString() + "\n";
+        }
+
+        if (!toPrint.isEmpty()) {
+            toPrint = toPrint.substring(0, toPrint.length() - 1);
+        }
+
+        return toPrint;
     }
 
     public class ProductsComparator implements Comparator<Product> {
@@ -172,8 +255,8 @@ public class Warehouse implements Serializable {
     public class BatchComparator implements Comparator<Batch> {
 
         public int compare(Batch b1, Batch b2) {
-            int compareProductId = b1.getProduct().getId().compareTo(b2.getProduct().getId());
-            int comparePartnerId = b1.getProvider().getId().compareTo(b2.getProvider().getId());
+            int compareProductId = b1.getProduct().getId().toLowerCase().compareTo(b2.getProduct().getId().toLowerCase());
+            int comparePartnerId = b1.getProvider().getId().toLowerCase().compareTo(b2.getProvider().getId().toLowerCase());
             int comparePrice = b1.getPrice().compareTo(b2.getPrice());
             int compareQuantity = b1.getStock().compareTo(b2.getStock());
 
