@@ -18,8 +18,8 @@ class DoDisplayDate extends Command<WarehouseManager> {
   @Override
   public final void execute() throws CommandException {
     //FIXME implement command
-    int date = _receiver.currentDate();
-    _display.addLine(Message.currentDate(date));
+    int days = _receiver.currentDays();
+    _display.addLine(Message.currentDate(days));
     _display.display();
   }
 

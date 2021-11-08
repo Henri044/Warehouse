@@ -18,6 +18,7 @@ import ggc.core.exception.NonPositiveDateException;
 import ggc.core.exception.SamePartnerKeyException;
 import ggc.core.exception.NonExistentPartnerKeyException;
 import ggc.core.exception.NonExistentProductKeyException;
+import ggc.core.exception.NonAvailableProductStockException;
 
 
 public class WarehouseManager {
@@ -94,7 +95,11 @@ public class WarehouseManager {
         return !_loadFile.isEmpty();
     }
 
-    public int currentDate() {
+    public int currentDays() {
+        return _warehouse.getDays();
+    }
+
+    public Date currentDate() {
         return _warehouse.getDate();
     }
 
@@ -150,5 +155,18 @@ public class WarehouseManager {
 
     public String batchesBelowLimitToString(int limit) {
         return _warehouse.batchesBelowLimitToString(limit);
+    }
+
+    public int getAvailableStockFromProduct(String idProduct) {
+        return _warehouse.getProduct(idProduct).getTotalStock();
+    }
+
+    public void registerSale(String idPartner, Date deadline, String idProduct, int quantity) throws NonExistentPartnerKeyException, NonExistentProductKeyException, NonAvailableProductStockException {
+        // VERIFICAR AQUI SE É POR CREDITO OU DIRETO???
+        try {
+            _warehouse.registerSale(idPartner, deadline, idProduct, quantity);
+        } catch (NonExistentPartnerKeyException nepk) { throw nepk; }
+        catch (NonExistentProductKeyException neprk) { throw neprk; }
+        catch (NonAvailableProductStockException napse) { throw napse; }
     }
 }
