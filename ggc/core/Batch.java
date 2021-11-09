@@ -43,6 +43,10 @@ public class Batch implements Serializable {
         return _stock;
     }
 
+    public void removeStock(int n) {
+        _stock -= n;
+    }
+
     /**
     * Gets the Product releated to the Batch.
     *
@@ -61,6 +65,10 @@ public class Batch implements Serializable {
 
     public Partner getProvider() {
         return _provider;
+    }
+
+    public void setStock(int stock) {
+        _stock = stock;
     }
 
     /**

@@ -5,10 +5,12 @@ import ggc.core.product.Product;
 import ggc.core.Date;
 import ggc.core.transaction.Transaction;
 
-public class Acquisition extends Transaction{
+import java.io.Serializable;
 
-    Acquisition(int id, Date paymentDate, double baseValue, int quantity, Partner provider, Product product){
-        super(id, paymentDate, baseValue, quantity, provider, product);
+public class Acquisition extends Transaction implements Serializable {
+
+    Acquisition(int id, int paymentDate, double baseValue, int quantity, Partner provider, Product product){
+        super(id, baseValue, quantity, provider, product, paymentDate);
     }
 
     public String toString(){

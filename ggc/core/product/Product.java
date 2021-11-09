@@ -1,6 +1,7 @@
 package ggc.core.product;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import ggc.core.Batch;
 import ggc.core.Partner;
@@ -67,6 +68,22 @@ public abstract class Product implements Serializable {
         return _batches;
     }
 
+    public Batch getCheapestBatch() {
+        Batch cheapestBatch = _batches.get(0);
+
+        for (Batch b : _batches) {
+            if (b.getPrice() < cheapestBatch.getPrice()) {
+                cheapestBatch = b;
+            }
+        }
+
+        return cheapestBatch;
+    }
+
+    public void removeStock(int n) {
+        _totalStock -= n;
+    }
+
     /**
     * Adds some Stock to the Product.
     *
@@ -100,6 +117,16 @@ public abstract class Product implements Serializable {
     *
     * @return a String with what should be displayed.
     */
+
+    public void deleteBatchesWithNoStock() {
+        Iterator<Batch> iter = _batches.iterator();
+
+        while (iter.hasNext()) {
+            Batch b = iter.next();
+            if (b.getStock() == 0)
+                iter.remove();
+        }
+    }
 
     public abstract String toString();
 

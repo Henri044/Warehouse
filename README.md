@@ -4,7 +4,7 @@
 How to compile:
 
 ```sh
-javac -cp po-uilib.jar:. `find ggc -name "*.java"`
+javac -cp po-uilib.jar:. -Xlint:unchecked `find ggc -name "*.java"`
 
 ```
 

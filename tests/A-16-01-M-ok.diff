@@ -1,0 +1,56 @@
+*** tests/A-16-01-M-ok.out	2021-11-07 16:04:59.279019000 +0000
+--- tests/A-16-01-M-ok.outhyp	2021-11-09 23:29:05.117368253 +0000
+***************
+*** 23,41 ****
+  4 - Registar compra
+  5 - Receber pagamento de venda
+  0 - Sair
+! Escolha uma opção: Identificador da transacção: Receber pagamento de venda: Operação inválida: A transacção '-1' não existe.
+! Gestão de Transacções
+  1 - Visualizar
+  2 - Registar desagregação
+  3 - Registar venda
+  4 - Registar compra
+  5 - Receber pagamento de venda
+  0 - Sair
+! Escolha uma opção: Identificador da transacção: Receber pagamento de venda: Operação inválida: A transacção '2' não existe.
+  Gestão de Transacções
+  1 - Visualizar
+  2 - Registar desagregação
+  3 - Registar venda
+  4 - Registar compra
+  5 - Receber pagamento de venda
+  0 - Sair
+--- 23,54 ----
+  4 - Registar compra
+  5 - Receber pagamento de venda
+  0 - Sair
+! Escolha uma opção: Gestão de Transacções
+  1 - Visualizar
+  2 - Registar desagregação
+  3 - Registar venda
+  4 - Registar compra
+  5 - Receber pagamento de venda
+  0 - Sair
+! Escolha uma opção: Opção inválida!
+  Gestão de Transacções
+  1 - Visualizar
+  2 - Registar desagregação
+  3 - Registar venda
++ 4 - Registar compra
++ 5 - Receber pagamento de venda
++ 0 - Sair
++ Escolha uma opção: Gestão de Transacções
++ 1 - Visualizar
++ 2 - Registar desagregação
++ 3 - Registar venda
++ 4 - Registar compra
++ 5 - Receber pagamento de venda
++ 0 - Sair
++ Escolha uma opção: Gestão de Transacções
++ 1 - Visualizar
++ 2 - Registar desagregação
++ 3 - Registar venda
+  4 - Registar compra
+  5 - Receber pagamento de venda
+  0 - Sair

@@ -16,12 +16,16 @@ import ggc.core.exception.SamePartnerKeyException;
 import ggc.core.exception.NonExistentPartnerKeyException;
 import ggc.core.exception.NonExistentProductKeyException;
 import ggc.core.exception.NonAvailableProductStockException;
+import ggc.core.exception.NonExistentTransactionKeyException;
 import ggc.core.product.Product;
 import ggc.core.Partner;
 import ggc.core.Date;
 import ggc.core.Parser;
 import ggc.core.product.SimpleProduct;
 import ggc.core.product.AggregateProduct;
+import ggc.core.transaction.Transaction;
+import ggc.core.transaction.sale.SaleByCredit;
+import ggc.core.transaction.sale.Sale;
 import ggc.core.transaction.Transaction;
 
 public class Warehouse implements Serializable {
@@ -357,7 +361,7 @@ public class Warehouse implements Serializable {
         return toPrint;
     }
   
-    public void registerSale(String idPartner, Date deadline, String idProductToSell, int quantity) throws NonExistentPartnerKeyException, NonExistentProductKeyException, NonAvailableProductStockException {
+    public void registerNewSale(String idPartner, int deadline, String idProductToSell, int quantity) throws NonExistentPartnerKeyException, NonExistentProductKeyException, NonAvailableProductStockException {
         if (!this.hasPartner(idPartner))
             throw new NonExistentPartnerKeyException();
         if (!this.hasProduct(idProductToSell))
@@ -367,21 +371,62 @@ public class Warehouse implements Serializable {
             throw new NonAvailableProductStockException();
 
         // Register new transaction
+        registerSaleByCredit(quantity, idPartner, idProductToSell, deadline);
+    }
+
+    public void registerSaleByCredit(int quantity, String idPartner, String idProductToSell, int deadline) {
+
+        int idTransaction = _transactions.size();
+        // Calculate Base Value
+        int remainingQuantity = quantity;
+        double baseValue = 0;
+        SaleByCredit sale;
+
+        while (remainingQuantity != 0) {
+            Batch cheapestBatch = this.getProduct(idProductToSell).getCheapestBatch();
+            baseValue += this.getProduct(idProductToSell).getCheapestBatch().getPrice();
+            cheapestBatch.removeStock(1);
+            this.getProduct(idProductToSell).removeStock(1);
+            remainingQuantity -= 1;
+
+            if (cheapestBatch.getStock() == 0) {
+                // Deletes the batch
+                this.getProduct(idProductToSell).deleteBatchesWithNoStock();
+            }
+        }
+
+        _accountingBalance += baseValue;
+
         // If deadline is the current date, the sale is normal, otherwise the sale is by credit
-        if (deadline.getDays() == _date.getDays()) {
-            //REGISTER SALE
-            System.out.println("REGISTA VENDA NORMAL");
+        if (deadline == _date.getDays()) {
+            //REGISTER SALE BY CREDIT WITHOUT INTEREST
+            //System.out.println("REGISTA VENDA NORMAL");
+            _balance += baseValue;
+            sale = new SaleByCredit(idTransaction, baseValue, quantity, _date.getDays(), this.getPartner(idPartner), this.getProduct(idProductToSell));
         }
         else {
-            //REGISTE SALE BY CREDIT
-            System.out.println("REGISTA VENDA COM JUROS");
+            //REGISTER SALE BY CREDIT WITH INTEREST
+            //System.out.println("REGISTA VENDA COM JUROS");
+            //BALANCE??? WITH INTERESTS AND SHIT
+            sale = new SaleByCredit(idTransaction, baseValue, quantity, this.getPartner(idPartner), this.getProduct(idProductToSell), deadline);
         }
+
+        //Add the sale to the transactions list
+        _transactions.add(sale);
+    }
+
+    public String transactionToString(int idTransaction) throws NonExistentTransactionKeyException {
+
+        if (idTransaction >= _transactions.size())
+            throw new NonExistentTransactionKeyException();
+
+        return _transactions.get(idTransaction).toString();
     }
 
     void importFile(String txtfile) throws IOException, BadEntryException {
         Parser parser = new Parser(this);
 
-        // If there is no text file, throws the exception
+        // If there is no valid text file, throws the exception
         try {
             parser.parseFile(txtfile);
         } catch (IOException | BadEntryException e) {
