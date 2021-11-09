@@ -16,4 +16,9 @@ public class BreakdownSale extends Sale implements Serializable {
     public String toString(){
         return ""; // TO DO
     }
+
+    @Override
+    public boolean isAcquisition(){
+        return false;
+    }
 }

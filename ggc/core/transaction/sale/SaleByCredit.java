@@ -33,4 +33,9 @@ public class SaleByCredit extends Sale implements Serializable {
         return "VENDA|" + this.getId() + "|" + this.getPartner().getId() + "|" + this.getProduct().getId() + "|" + this.getQuantity() + "|"
             + Math.round(this.getBaseValue()) + "|" + Math.round(_amountPaid) + "|" + this.getPaymentDate() + "|" + _deadline;
     }
+
+    @Override
+    public boolean isAcquisition(){
+        return false;
+    }
 }

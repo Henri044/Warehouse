@@ -9,11 +9,18 @@ import java.io.Serializable;
 
 public class Acquisition extends Transaction implements Serializable {
 
-    Acquisition(int id, int paymentDate, double baseValue, int quantity, Partner provider, Product product){
+    public Acquisition(int id, int paymentDate, double baseValue, int quantity, Partner provider, Product product){
         super(id, baseValue, quantity, provider, product, paymentDate);
     }
 
+    @Override
     public String toString(){
-        return ""; //TO DO
+        return ("COMPRA|" + getId() + "|" + getPartner().getId() + "|" + getProduct().getId() + "|" +
+        getQuantity() + "|" + Math.round(getPrice()) + "|" + getPaymentDate());
+    }
+
+    @Override
+    public boolean isAcquisition(){
+        return true;
     }
 }

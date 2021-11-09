@@ -10,6 +10,8 @@ import java.io.ObjectInputStream;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 
+import java.util.ArrayList;
+
 import ggc.core.exception.BadEntryException;
 import ggc.core.exception.ImportFileException;
 import ggc.core.exception.UnavailableFileException;
@@ -20,7 +22,6 @@ import ggc.core.exception.NonExistentPartnerKeyException;
 import ggc.core.exception.NonExistentProductKeyException;
 import ggc.core.exception.NonAvailableProductStockException;
 import ggc.core.exception.NonExistentTransactionKeyException;
-
 
 public class WarehouseManager {
 
@@ -158,8 +159,20 @@ public class WarehouseManager {
         return _warehouse.batchesBelowLimitToString(limit);
     }
 
+    public boolean hasProduct(String idProduct) {
+        return _warehouse.hasProduct(idProduct);
+    }
+
     public int getAvailableStockFromProduct(String idProduct) {
         return _warehouse.getProduct(idProduct).getTotalStock();
+    }
+
+    public void registerSimpleProduct(String idProduct, double price) {
+        _warehouse.registerSimpleProduct(idProduct, price);
+    }
+
+    public void registerAggregateProduct(String idProduct, double price, Recipe recipe) {
+        _warehouse.registerAggregateProduct(idProduct, price, recipe);
     }
 
     public void registerNewSale(String idPartner, int deadline, String idProduct, int quantity) throws NonExistentPartnerKeyException, NonExistentProductKeyException, NonAvailableProductStockException {
@@ -169,6 +182,24 @@ public class WarehouseManager {
         } catch (NonExistentPartnerKeyException nepk) { throw nepk; }
         catch (NonExistentProductKeyException neprk) { throw neprk; }
         catch (NonAvailableProductStockException napse) { throw napse; }
+    }
+
+    public void registerAcquisition(double price, int stock, String idPartner, String idProduct) throws NonExistentPartnerKeyException {
+        try {
+            _warehouse.registerAcquisition(price, stock, idPartner, idProduct);
+        } catch (NonExistentPartnerKeyException spke) { throw spke; }
+    }
+
+    public Recipe registerRecipe(double alpha, ArrayList<String> idComponents, ArrayList<Integer> quantities) throws NonExistentProductKeyException {
+        try {
+            return _warehouse.registerRecipe(alpha, idComponents, quantities);
+        } catch (NonExistentProductKeyException nepke) { throw nepke; }
+    }
+
+    public String acquisitionsByPartnerToString(String idPartner) throws NonExistentPartnerKeyException {
+        try {
+            return _warehouse.acquisitionsByPartnerToString(idPartner);
+        } catch (NonExistentPartnerKeyException nepke) { throw nepke; }
     }
 
     public String transactionToString(int idTransaction) throws NonExistentTransactionKeyException {

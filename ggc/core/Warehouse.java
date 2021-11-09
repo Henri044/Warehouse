@@ -26,6 +26,8 @@ import ggc.core.product.AggregateProduct;
 import ggc.core.transaction.Transaction;
 import ggc.core.transaction.sale.SaleByCredit;
 import ggc.core.transaction.sale.Sale;
+import ggc.core.transaction.Acquisition;
+import ggc.core.Recipe;
 import ggc.core.transaction.Transaction;
 
 public class Warehouse implements Serializable {
@@ -413,6 +415,56 @@ public class Warehouse implements Serializable {
 
         //Add the sale to the transactions list
         _transactions.add(sale);
+    }
+
+    public Recipe registerRecipe(double alpha, ArrayList<String> idComponents, ArrayList<Integer> quantities) throws NonExistentProductKeyException{
+        ArrayList<Product> components = new ArrayList<Product>();
+
+        for (String i : idComponents) {
+            if (!_products.containsKey(i.toLowerCase()))
+                throw new NonExistentProductKeyException();
+
+            components.add(getProduct(i.toLowerCase()));
+        }
+
+        Recipe newRecipe = new Recipe(alpha, components, quantities);
+        return newRecipe;
+    }
+
+    public void registerAcquisition(double price, int stock, String idPartner, String idProduct) throws NonExistentPartnerKeyException {
+        int idTransaction = _transactions.size();
+        Acquisition newAcquisition = new Acquisition(idTransaction, this.getDays(), price, stock, this.getPartner(idPartner), this.getProduct(idProduct));
+
+        if (!_partners.containsKey(idPartner.toLowerCase()))
+            throw new NonExistentPartnerKeyException();
+
+        registerBatch(price, stock, this.getPartner(idPartner), idProduct);
+
+        _transactions.add(newAcquisition);
+        _balance -= _transactions.get(idTransaction).getPrice();
+    }
+
+    public String acquisitionsByPartnerToString(String idPartner) throws NonExistentPartnerKeyException {
+        List<Transaction> acquisitionsByPartner = new ArrayList<>(); 
+        String toPrint = new String();
+
+        if (!_partners.containsKey(idPartner.toLowerCase()))
+            throw new NonExistentPartnerKeyException();
+
+        for (Transaction t : _transactions) {
+            if (t.isAcquisition() && t.getPartner().getId().toLowerCase().equals(idPartner.toLowerCase()))
+                acquisitionsByPartner.add(t);
+        }
+
+        for (Transaction a : acquisitionsByPartner) {
+            toPrint += a.toString() + "\n";
+        }
+
+        if (!toPrint.isEmpty()) {
+            toPrint = toPrint.substring(0, toPrint.length() - 1);
+        }
+
+        return toPrint;
     }
 
     public String transactionToString(int idTransaction) throws NonExistentTransactionKeyException {

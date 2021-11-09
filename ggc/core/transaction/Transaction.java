@@ -67,4 +67,6 @@ public abstract class Transaction implements Serializable {
     }
 
     public abstract String toString();
+
+    public abstract boolean isAcquisition();
 }
