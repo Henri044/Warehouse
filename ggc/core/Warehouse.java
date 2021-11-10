@@ -433,7 +433,8 @@ public class Warehouse implements Serializable {
 
     public void registerAcquisition(double price, int stock, String idPartner, String idProduct) throws NonExistentPartnerKeyException {
         int idTransaction = _transactions.size();
-        Acquisition newAcquisition = new Acquisition(idTransaction, this.getDays(), price, stock, this.getPartner(idPartner), this.getProduct(idProduct));
+        double baseValue = price * stock;
+        Acquisition newAcquisition = new Acquisition(idTransaction, this.getDays(), baseValue, stock, this.getPartner(idPartner), this.getProduct(idProduct));
 
         if (!_partners.containsKey(idPartner.toLowerCase()))
             throw new NonExistentPartnerKeyException();
@@ -441,7 +442,9 @@ public class Warehouse implements Serializable {
         registerBatch(price, stock, this.getPartner(idPartner), idProduct);
 
         _transactions.add(newAcquisition);
-        _balance -= _transactions.get(idTransaction).getPrice();
+        this.getPartner(idPartner).addAcquisitionValue(price * stock);
+        _balance -= baseValue; 
+        _accountingBalance -= baseValue;
     }
 
     public String acquisitionsByPartnerToString(String idPartner) throws NonExistentPartnerKeyException {

@@ -118,11 +118,9 @@ public class Parser {
             if (!_store.hasProduct(idProduct)) {
                 _store.registerAggregateProduct(idProduct, price, recipe);
             }
-
-            Product product = _store.getProduct(idProduct);
-            Partner partner = _store.getPartner(idPartner);
-
-            _store.registerBatch(price, stock, partner, idProduct);
         }
+
+        Partner partner = _store.getPartner(idPartner);
+        _store.registerBatch(price, stock, partner, idProduct);
     }
 }

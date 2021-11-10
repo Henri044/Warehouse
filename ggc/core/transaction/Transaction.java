@@ -50,10 +50,6 @@ public abstract class Transaction implements Serializable {
         return _product;
     }
 
-    public double getPrice(){
-        return _baseValue;
-    }
-
     public int getQuantity(){
         return _quantity;
     }

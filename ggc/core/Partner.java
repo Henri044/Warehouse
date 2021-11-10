@@ -56,6 +56,10 @@ public class Partner implements Serializable {
         return _paidSalesValue;
     }
 
+    public void addAcquisitionValue(double n) {
+        _acquisitionsValue += n;
+    }
+
     public String toString() {
         return (_id + "|" + _name + "|" + _address + "|" + _status + "|" + Math.round(_points) +
          "|" + Math.round(_acquisitionsValue) + "|" + Math.round(_effectiveSalesValue) + "|" + Math.round(_paidSalesValue));
