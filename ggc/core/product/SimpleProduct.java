@@ -18,6 +18,11 @@ public class SimpleProduct extends Product implements Serializable {
 
     }
 
+    @Override
+    public boolean isSimpleProduct() {
+        return true;
+    }
+
     /**
     * Abstract Method.
     * Returns what should be displayed on the App.

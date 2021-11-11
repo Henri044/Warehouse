@@ -16,6 +16,14 @@ public class Recipe {
         _quantities = new ArrayList<Integer>(quantities);
     }
 
+    public ArrayList<Product> getComponents() {
+        return _products;
+    }
+
+    public ArrayList<Integer> getQuantities() {
+        return _quantities;
+    }
+
     public String toString(){
         String recipe = new String();
 

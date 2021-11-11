@@ -186,6 +186,7 @@ public abstract class Product implements Serializable {
         }
     }
     
+    public abstract boolean isSimpleProduct();
 
     public abstract String toString();
 

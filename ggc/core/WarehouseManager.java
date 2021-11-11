@@ -207,4 +207,20 @@ public class WarehouseManager {
             return _warehouse.transactionToString(idTransaction);
         } catch (NonExistentTransactionKeyException netke) { throw netke; }
     }
+
+    public void toggleNotifs(String idPartner, String idProduct) throws NonExistentPartnerKeyException, NonExistentProductKeyException {
+        _warehouse.toggleNotifs(idPartner, idProduct);
+    }
+
+    public String transactionsPaidByPartnerToString(String idPartner) throws NonExistentPartnerKeyException {
+        try {
+            return _warehouse.transactionsPaidByPartnerToString(idPartner);
+        } catch (NonExistentPartnerKeyException nepke) { throw nepke; }
+    }
+
+    public String salesByPartnerToString(String idPartner) throws NonExistentPartnerKeyException {
+        try {
+            return _warehouse.salesByPartnerToString(idPartner);
+        } catch (NonExistentPartnerKeyException nepke) { throw nepke; }
+    }
 }

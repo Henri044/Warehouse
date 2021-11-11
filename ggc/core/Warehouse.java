@@ -505,6 +505,65 @@ public class Warehouse implements Serializable {
         return _transactions.get(idTransaction).toString();
     }
 
+    public void toggleNotifs(String idPartner, String idProduct) throws NonExistentPartnerKeyException, NonExistentProductKeyException {
+
+        if (!_partners.containsKey(idPartner.toLowerCase()))
+            throw new NonExistentPartnerKeyException();
+        if (!_products.containsKey(idProduct.toLowerCase()))
+            throw new NonExistentProductKeyException();
+
+        Partner partner = this.getPartner(idPartner);
+        Product product = this.getProduct(idProduct);
+
+        product.toggle(partner);
+    }
+
+    public String transactionsPaidByPartnerToString(String idPartner) throws NonExistentPartnerKeyException {
+        List<Transaction> transactionsPaidByPartner = new ArrayList<>(); 
+        String toPrint = new String();
+
+        if (!_partners.containsKey(idPartner.toLowerCase()))
+            throw new NonExistentPartnerKeyException();
+
+        for (Transaction t : _transactions) {
+            if (t.isPaid() && t.getPartner().getId().toLowerCase().equals(idPartner.toLowerCase()))
+                transactionsPaidByPartner.add(t);
+        }
+
+        for (Transaction tp : transactionsPaidByPartner) {
+            toPrint += tp.toString() + "\n";
+        }
+
+        if (!toPrint.isEmpty()) {
+            toPrint = toPrint.substring(0, toPrint.length() - 1);
+        }
+
+        return toPrint;
+    }
+
+    public String salesByPartnerToString(String idPartner) throws NonExistentPartnerKeyException {
+        List<Transaction> salesByPartner = new ArrayList<>(); 
+        String toPrint = new String();
+
+        if (!_partners.containsKey(idPartner.toLowerCase()))
+            throw new NonExistentPartnerKeyException();
+
+        for (Transaction t : _transactions) {
+            if (!t.isAcquisition() && t.getPartner().getId().toLowerCase().equals(idPartner.toLowerCase()))
+                salesByPartner.add(t);
+        }
+
+        for (Transaction a : salesByPartner) {
+            toPrint += a.toString() + "\n";
+        }
+
+        if (!toPrint.isEmpty()) {
+            toPrint = toPrint.substring(0, toPrint.length() - 1);
+        }
+
+        return toPrint;
+    }
+
     void importFile(String txtfile) throws IOException, BadEntryException {
         Parser parser = new Parser(this);
 
@@ -515,5 +574,4 @@ public class Warehouse implements Serializable {
             throw e;
         }
     }
-
 }

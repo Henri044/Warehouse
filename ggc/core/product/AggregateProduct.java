@@ -19,9 +19,18 @@ public class AggregateProduct extends Product implements Serializable {
         _recipe = recipe;
     }
 
+    public Recipe getRecipe() {
+        return _recipe;
+    }
+
     @Override
     public void checkQuantity(int quantity, Partner provider){
         return; //TO DO
+    }
+
+    @Override
+    public boolean isSimpleProduct() {
+        return false;
     }
 
     /**
