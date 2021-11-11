@@ -2,9 +2,12 @@ package ggc.core.product;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import ggc.core.Batch;
 import ggc.core.Partner;
+import ggc.core.Observer;
+import ggc.core.*;
 
 import java.io.Serializable;
 
@@ -15,14 +18,17 @@ public abstract class Product implements Serializable {
 
     private String _id;
     private double _maxPrice;
+    private double _minPrice;
     private int _totalStock;
     private ArrayList<Batch> _batches;
+    private List<Observer> _observers = new ArrayList<Observer>();
 
     // CONSTRUCTOR
 
     Product(String productId, double maxPrice){
         _id = productId;
         _maxPrice = maxPrice;
+        _minPrice = maxPrice;
         _batches = new ArrayList<Batch>();
     }
 
@@ -44,6 +50,10 @@ public abstract class Product implements Serializable {
 
     public double getPrice() {
         return _maxPrice;
+    }
+
+    public double getMinPrice() {
+        return _minPrice;
     }
 
     /**
@@ -80,6 +90,11 @@ public abstract class Product implements Serializable {
         return cheapestBatch;
     }
 
+    public List<Observer> getObservers() {
+        System.out.println(_observers.size());
+        return _observers;
+    }
+
     public void removeStock(int n) {
         _totalStock -= n;
     }
@@ -107,8 +122,20 @@ public abstract class Product implements Serializable {
         _batches = batches;
     }
 
+    public void addBatch(Batch b) {
+        _batches.add(b);
+        if (_minPrice > b.getPrice()) {
+            BargainNotification notif = new BargainNotification(this, b.getPrice());
+            notifyObserver(notif);
+        }
+    }
+
     public void setMaxPrice(double maxPrice) {
         _maxPrice = maxPrice;
+    }
+
+    public void setMinPrice(double minPrice) {
+        _minPrice = minPrice;
     }
 
     /**
@@ -127,6 +154,38 @@ public abstract class Product implements Serializable {
                 iter.remove();
         }
     }
+
+    public void subscribe(Observer o) {
+        _observers.add(o);
+    }
+
+    public void unsubscribe(Observer o) {
+        Iterator<Observer> iter = _observers.iterator();
+
+        while (iter.hasNext()) {
+            Observer obs = iter.next();
+            if (obs == o) {
+                iter.remove();
+            }
+        }
+    }
+
+    public void toggle(Observer partner) {
+        for (Observer obs : _observers) {
+            if (obs == partner) {
+                unsubscribe(obs);
+                return;
+            }
+        }
+        subscribe(partner);
+    }
+    
+    public void notifyObserver(Notification n) {
+        for (Observer obs : _observers) {
+            obs.update(n);
+        }
+    }
+    
 
     public abstract String toString();
 

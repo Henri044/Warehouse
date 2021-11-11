@@ -9,6 +9,7 @@ import ggc.app.partners.Message;
 import ggc.app.exception.UnknownPartnerKeyException;
 
 import ggc.core.exception.NonExistentPartnerKeyException;
+import ggc.core.*;
 
 /**
  * Show partner.

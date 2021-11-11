@@ -29,6 +29,9 @@ import ggc.core.transaction.sale.Sale;
 import ggc.core.transaction.Acquisition;
 import ggc.core.Recipe;
 import ggc.core.transaction.Transaction;
+import ggc.core.Notification;
+import ggc.core.BargainNotification;
+import ggc.core.NewNotification;
 
 public class Warehouse implements Serializable {
 
@@ -88,9 +91,15 @@ public class Warehouse implements Serializable {
 
         // Puts the new partner in the list of partners
         _partners.put(id.toLowerCase(), newPartner);
+
+        for (Product p : _products.values()) {
+            p.subscribe(newPartner);
+        }
     }
 
     public String partnerToString(String id) throws NonExistentPartnerKeyException {
+
+        String toPrint = new String();
 
         // Checks if the partner is in the list of partners, if not throws the exception
         if (!_partners.containsKey(id.toLowerCase()))
@@ -99,7 +108,17 @@ public class Warehouse implements Serializable {
         // Searchs for the partner in the list of partners
         Partner partner = _partners.get(id.toLowerCase());
 
-        return partner.toString();
+        toPrint = partner.toString() + "\n";
+
+        for (Notification n : partner.getNotifications()) {
+            toPrint += n.toString() + "\n";
+        }
+
+        partner.clearNotifs();
+
+        toPrint = toPrint.substring(0, toPrint.length() - 1);
+
+        return toPrint;
     }
 
     public boolean hasPartner(String id) {
@@ -122,6 +141,10 @@ public class Warehouse implements Serializable {
 
         SimpleProduct newProduct = new SimpleProduct(idProduct, price);
 
+        for (Partner p : _partners.values()) {
+            newProduct.subscribe(p);
+        }
+
         // Puts the new product in the list of products
         _products.put(idProduct.toLowerCase(), newProduct);
     }
@@ -129,6 +152,11 @@ public class Warehouse implements Serializable {
     public void registerAggregateProduct(String idProduct, double price, Recipe recipe) {
 
         AggregateProduct newProduct = new AggregateProduct(idProduct, price, recipe);
+
+        // Put every single existent Partner interested in the product notification
+        for (Partner p : _partners.values()) {
+            newProduct.subscribe(p);
+        }
 
         // Puts the new product in the list of products
         _products.put(idProduct.toLowerCase(), newProduct);
@@ -138,20 +166,7 @@ public class Warehouse implements Serializable {
 
         Batch newBatch = new Batch(price, stock, partner, this.getProduct(idProduct));
 
-        // Checks if the product already has any batch
-        // If so add the new batch
-        if ((this.getProduct(idProduct).getBatches()).size() != 0) {
-            ArrayList<Batch> productBatches = this.getProduct(idProduct).getBatches();
-            productBatches.add(newBatch);
-            this.getProduct(idProduct).setBatches(productBatches);
-        }
-
-        // Otherwise create a new array of batches for the new product
-        else {
-            ArrayList<Batch> newProductBatches = new ArrayList<Batch>();
-            newProductBatches.add(newBatch);
-            this.getProduct(idProduct).setBatches(newProductBatches);
-        }
+        this.getProduct(idProduct).addBatch(newBatch);
 
         // Adds the stock to the product itself
         Product currentProduct = this.getProduct(idProduct);
@@ -161,6 +176,9 @@ public class Warehouse implements Serializable {
         // If so, change the max price
         if (price > this.getProduct(idProduct).getPrice()) {
             this.getProduct(idProduct).setMaxPrice(price);
+        }
+        if (price < this.getProduct(idProduct).getMinPrice()) {
+            this.getProduct(idProduct).setMinPrice(price);
         }
     }
 
@@ -438,6 +456,15 @@ public class Warehouse implements Serializable {
 
         if (!_partners.containsKey(idPartner.toLowerCase()))
             throw new NonExistentPartnerKeyException();
+
+        /*
+        if(!hasProduct(idProduct)){
+            for (Observer obs : this.getProduct(idProduct).getObservers()) {
+                NewNotification notif2 = new NewNotification(this.getProduct(idProduct), price);
+                obs.update(notif2);
+            }
+        }
+        */
 
         registerBatch(price, stock, this.getPartner(idPartner), idProduct);
 

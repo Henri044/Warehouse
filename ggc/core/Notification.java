@@ -2,11 +2,22 @@ package ggc.core;
 
 import ggc.core.product.Product;
 
-public class Notification {
+public abstract class Notification {
     private Product _product;
-    private boolean _interest;
+    private double _price;
 
-    public String toString() {
-        return ""; //TO DO
+    public Notification(Product product, double price) {
+        _product = product;
+        _price = price;
     }
+
+    public Product getProduct() {
+        return _product;
+    }
+
+    public double getPrice() {
+        return _price;
+    }
+
+    public abstract String toString();
 }
