@@ -223,4 +223,13 @@ public class WarehouseManager {
             return _warehouse.salesByPartnerToString(idPartner);
         } catch (NonExistentPartnerKeyException nepke) { throw nepke; }
     }
+
+    public void registerBreakdownSale(String idPartner, String idProduct, int quantity) 
+    throws NonAvailableProductStockException, NonExistentPartnerKeyException, NonExistentProductKeyException {
+        try {
+            _warehouse.registerBreakdownSale(idPartner, idProduct, quantity);
+        } catch (NonAvailableProductStockException napse) { throw napse; }
+        catch (NonExistentPartnerKeyException nepke) { throw nepke; }
+        catch (NonExistentProductKeyException neprke) { throw neprke; }
+    }
 }

@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class BreakdownSale extends Sale implements Serializable {
     
-    BreakdownSale(int id, double baseValue, int quantity, Partner provider, Product product, int paymentDate){
+    public BreakdownSale(int id, double baseValue, int quantity, Partner provider, Product product, int paymentDate){
         super(id, baseValue, quantity, provider, product, paymentDate);
     }
 

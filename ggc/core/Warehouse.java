@@ -25,6 +25,7 @@ import ggc.core.product.SimpleProduct;
 import ggc.core.product.AggregateProduct;
 import ggc.core.transaction.Transaction;
 import ggc.core.transaction.sale.SaleByCredit;
+import ggc.core.transaction.sale.BreakdownSale;
 import ggc.core.transaction.sale.Sale;
 import ggc.core.transaction.Acquisition;
 import ggc.core.Recipe;
@@ -32,6 +33,9 @@ import ggc.core.transaction.Transaction;
 import ggc.core.Notification;
 import ggc.core.BargainNotification;
 import ggc.core.NewNotification;
+import ggc.core.comparators.BatchComparator;
+import ggc.core.comparators.PartnersComparator;
+import ggc.core.comparators.ProductsComparator;
 
 public class Warehouse implements Serializable {
 
@@ -39,7 +43,6 @@ public class Warehouse implements Serializable {
 
     /** Serial number for serialization. */
     private static final long serialVersionUID = 202109192006L;
-    //private int _nextTransactionId;
     private double _balance;
     private double _accountingBalance;
     private Date _date;
@@ -52,11 +55,12 @@ public class Warehouse implements Serializable {
     Warehouse() {
 
         _date = new Date();
-        //_nextTransactionId = 0;
         _partners = new HashMap<>();
         _products = new HashMap<String, Product>();
         _transactions = new ArrayList<Transaction>();
     }
+
+    // ************************* DATE ***********************************
 
     public int getDays() {
         return _date.getDays();
@@ -73,6 +77,8 @@ public class Warehouse implements Serializable {
         } catch (NonPositiveDateException ide) { throw ide; }
     }
 
+    // ************************* BALANCE ***********************************
+
     public double getBalance() {
         return _balance;
     }
@@ -80,6 +86,8 @@ public class Warehouse implements Serializable {
     public double getAccountingBalance() {
         return _accountingBalance;
     }
+
+    // ************************* PARTNER ***********************************
 
     public void registerPartner(String id, String name, String address) throws SamePartnerKeyException {
 
@@ -121,6 +129,27 @@ public class Warehouse implements Serializable {
         return toPrint;
     }
 
+    public String allPartnersToString() {
+        Collection<Partner> values = _partners.values();
+        List<Partner> unsortedPartners = new ArrayList<Partner>(values);
+        List<Partner> sortedPartners = new ArrayList<>(unsortedPartners);
+        String toPrint = new String();
+
+        // Sorts the partners
+        Collections.sort(sortedPartners, new PartnersComparator());
+
+        // Gets all the partners to String
+        for (int i = 0; i < sortedPartners.size(); i++) {
+            toPrint += sortedPartners.get(i).toString() + "\n";
+        } 
+
+        if (!toPrint.isEmpty()) {
+            toPrint = toPrint.substring(0, toPrint.length() - 1);
+        }
+  
+        return toPrint;
+    }
+
     public boolean hasPartner(String id) {
         return _partners.containsKey(id.toLowerCase());
     }
@@ -128,6 +157,8 @@ public class Warehouse implements Serializable {
     public Partner getPartner(String id) {
         return _partners.get(id.toLowerCase());
     }
+
+    // ************************* PRODUCT ***********************************
 
     public boolean hasProduct(String id) {
         return _products.containsKey(id.toLowerCase());
@@ -161,6 +192,29 @@ public class Warehouse implements Serializable {
         // Puts the new product in the list of products
         _products.put(idProduct.toLowerCase(), newProduct);
     }
+
+    public String allProductsToString() {
+        Collection<Product> values = _products.values();
+        List<Product> unsortedProducts = new ArrayList<Product>(values);
+        List<Product> sortedProducts = new ArrayList<>(unsortedProducts);
+        String toPrint = new String();
+
+        // Sorts the products
+        Collections.sort(sortedProducts, new ProductsComparator());
+
+        // Gets all the products to String
+        for (Product p : sortedProducts) {
+            toPrint += p.toString() + "\n";
+        }
+
+        if (!toPrint.isEmpty()) {
+            toPrint = toPrint.substring(0, toPrint.length() - 1);
+        }
+
+        return toPrint;
+    }
+
+    // ************************* BATCHES ***********************************
 
     public void registerBatch(double price, int stock, Partner partner, String idProduct) {
 
@@ -274,89 +328,6 @@ public class Warehouse implements Serializable {
         return toPrint;
     }
 
-    public class ProductsComparator implements Comparator<Product> {
-
-        // Compare and sort the products by their ID's
-        public int compare(Product p1, Product p2){
-            return p1.getId().toLowerCase().compareTo(p2.getId().toLowerCase());
-        }
-    }
-
-    public String allProductsToString() {
-        Collection<Product> values = _products.values();
-        List<Product> unsortedProducts = new ArrayList<Product>(values);
-        List<Product> sortedProducts = new ArrayList<>(unsortedProducts);
-        String toPrint = new String();
-
-        // Sorts the products
-        Collections.sort(sortedProducts, new ProductsComparator());
-
-        // Gets all the products to String
-        for (Product p : sortedProducts) {
-            toPrint += p.toString() + "\n";
-        }
-
-        if (!toPrint.isEmpty()) {
-            toPrint = toPrint.substring(0, toPrint.length() - 1);
-        }
-
-        return toPrint;
-    }
-
-    public class PartnersComparator implements Comparator<Partner> {
-
-        // Compare and sort the partners by their ID's
-        public int compare(Partner p1, Partner p2){
-            return p1.getId().toLowerCase().compareTo(p2.getId().toLowerCase());
-        }
-    }
-
-    public String allPartnersToString() {
-        Collection<Partner> values = _partners.values();
-        List<Partner> unsortedPartners = new ArrayList<Partner>(values);
-        List<Partner> sortedPartners = new ArrayList<>(unsortedPartners);
-        String toPrint = new String();
-
-        // Sorts the partners
-        Collections.sort(sortedPartners, new PartnersComparator());
-
-        // Gets all the partners to String
-        for (int i = 0; i < sortedPartners.size(); i++) {
-            toPrint += sortedPartners.get(i).toString() + "\n";
-        } 
-
-        if (!toPrint.isEmpty()) {
-            toPrint = toPrint.substring(0, toPrint.length() - 1);
-        }
-  
-        return toPrint;
-    }
-
-    public class BatchComparator implements Comparator<Batch> {
-
-        // Compare and sort the batches by their product ID's, after partner ID's,
-        // after price and finally quantity
-        public int compare(Batch b1, Batch b2) {
-            int compareProductId = b1.getProduct().getId().toLowerCase().compareTo(b2.getProduct().getId().toLowerCase());
-            int comparePartnerId = b1.getProvider().getId().toLowerCase().compareTo(b2.getProvider().getId().toLowerCase());
-            int comparePrice = b1.getPrice().compareTo(b2.getPrice());
-            int compareQuantity = b1.getStock().compareTo(b2.getStock());
-
-            if (compareProductId != 0) {
-                return compareProductId;
-            }
-            else if (comparePartnerId != 0) {
-                return comparePartnerId;
-            }
-            else if (comparePrice != 0) {
-                return comparePrice;
-            }
-            else {
-                return compareQuantity;
-            }
-        }
-    }
-
     public String allBatchesToString() {
         ArrayList<Batch> batches = new ArrayList<>();
         String toPrint = new String();
@@ -380,6 +351,8 @@ public class Warehouse implements Serializable {
     
         return toPrint;
     }
+
+    // ************************* TRANSACTIONS ***********************************
   
     public void registerNewSale(String idPartner, int deadline, String idProductToSell, int quantity) throws NonExistentPartnerKeyException, NonExistentProductKeyException, NonAvailableProductStockException {
         if (!this.hasPartner(idPartner))
@@ -435,18 +408,61 @@ public class Warehouse implements Serializable {
         _transactions.add(sale);
     }
 
-    public Recipe registerRecipe(double alpha, ArrayList<String> idComponents, ArrayList<Integer> quantities) throws NonExistentProductKeyException{
-        ArrayList<Product> components = new ArrayList<Product>();
+    public void registerBreakdownSale(String idPartner, String idProduct, int quantity) 
+    throws NonAvailableProductStockException, NonExistentPartnerKeyException, NonExistentProductKeyException {
+        int idTransaction = _transactions.size();
+        int i = 0;
+        double price = 0;
+        double priceAllComponents = 0;
 
-        for (String i : idComponents) {
-            if (!_products.containsKey(i.toLowerCase()))
-                throw new NonExistentProductKeyException();
+        if (!_partners.containsKey(idPartner.toLowerCase()))
+            throw new NonExistentPartnerKeyException();
 
-            components.add(getProduct(i.toLowerCase()));
+        if (!_products.containsKey(idProduct.toLowerCase()))
+            throw new NonExistentProductKeyException();
+
+        if (this.getProduct(idProduct).getTotalStock() < quantity)
+            throw new NonAvailableProductStockException();
+
+        double priceProduct = this.getProduct(idProduct).getPrice();
+        BreakdownSale newBreakdownSale = new BreakdownSale(idTransaction, this.getProduct(idProduct).getPrice(), quantity, this.getPartner(idPartner), this.getProduct(idProduct), this.getDays());
+        Recipe productRecipe = this.getProduct(idProduct).getRecipe();
+
+        if(!this.getProduct(idProduct).isSimpleProduct()) {
+
+            this.getProduct(idProduct).removeStock(quantity);
+            Batch cheapestBatch = this.getProduct(idProduct).getCheapestBatch();
+            cheapestBatch.removeStock(quantity);
+
+            if (cheapestBatch.getStock() == 0) {
+                // Deletes the batch
+                this.getProduct(idProduct).deleteBatchesWithNoStock();
+            }
+
+            ArrayList<Product> components = productRecipe.getComponents();
+            ArrayList<Integer> quantities = productRecipe.getQuantities();
+            while (components.size() > i) {
+
+                Product product = components.get(i);
+                quantity = quantities.get(i);
+                if (product.getBatches().size() != 0) {
+                    price += product.getCheapestBatch().getPrice();
+                }
+                else {
+                    price += product.getPrice();
+                }
+
+                priceAllComponents += price*quantity;
+                registerBatch(price, quantity, this.getPartner(idPartner), product.getId());
+                i++;
+            }
+
+            if ((priceProduct - priceAllComponents) > 0) {
+                _balance += priceProduct - priceAllComponents;
+                _accountingBalance += priceProduct - priceAllComponents;
+            }
+            _transactions.add(newBreakdownSale);
         }
-
-        Recipe newRecipe = new Recipe(alpha, components, quantities);
-        return newRecipe;
     }
 
     public void registerAcquisition(double price, int stock, String idPartner, String idProduct) throws NonExistentPartnerKeyException {
@@ -472,50 +488,6 @@ public class Warehouse implements Serializable {
         this.getPartner(idPartner).addAcquisitionValue(price * stock);
         _balance -= baseValue; 
         _accountingBalance -= baseValue;
-    }
-
-    public String acquisitionsByPartnerToString(String idPartner) throws NonExistentPartnerKeyException {
-        List<Transaction> acquisitionsByPartner = new ArrayList<>(); 
-        String toPrint = new String();
-
-        if (!_partners.containsKey(idPartner.toLowerCase()))
-            throw new NonExistentPartnerKeyException();
-
-        for (Transaction t : _transactions) {
-            if (t.isAcquisition() && t.getPartner().getId().toLowerCase().equals(idPartner.toLowerCase()))
-                acquisitionsByPartner.add(t);
-        }
-
-        for (Transaction a : acquisitionsByPartner) {
-            toPrint += a.toString() + "\n";
-        }
-
-        if (!toPrint.isEmpty()) {
-            toPrint = toPrint.substring(0, toPrint.length() - 1);
-        }
-
-        return toPrint;
-    }
-
-    public String transactionToString(int idTransaction) throws NonExistentTransactionKeyException {
-
-        if (idTransaction >= _transactions.size())
-            throw new NonExistentTransactionKeyException();
-
-        return _transactions.get(idTransaction).toString();
-    }
-
-    public void toggleNotifs(String idPartner, String idProduct) throws NonExistentPartnerKeyException, NonExistentProductKeyException {
-
-        if (!_partners.containsKey(idPartner.toLowerCase()))
-            throw new NonExistentPartnerKeyException();
-        if (!_products.containsKey(idProduct.toLowerCase()))
-            throw new NonExistentProductKeyException();
-
-        Partner partner = this.getPartner(idPartner);
-        Product product = this.getProduct(idProduct);
-
-        product.toggle(partner);
     }
 
     public String transactionsPaidByPartnerToString(String idPartner) throws NonExistentPartnerKeyException {
@@ -562,6 +534,68 @@ public class Warehouse implements Serializable {
         }
 
         return toPrint;
+    }
+
+    public String acquisitionsByPartnerToString(String idPartner) throws NonExistentPartnerKeyException {
+        List<Transaction> acquisitionsByPartner = new ArrayList<>(); 
+        String toPrint = new String();
+
+        if (!_partners.containsKey(idPartner.toLowerCase()))
+            throw new NonExistentPartnerKeyException();
+
+        for (Transaction t : _transactions) {
+            if (t.isAcquisition() && t.getPartner().getId().toLowerCase().equals(idPartner.toLowerCase()))
+                acquisitionsByPartner.add(t);
+        }
+
+        for (Transaction a : acquisitionsByPartner) {
+            toPrint += a.toString() + "\n";
+        }
+
+        if (!toPrint.isEmpty()) {
+            toPrint = toPrint.substring(0, toPrint.length() - 1);
+        }
+
+        return toPrint;
+    }
+
+    public String transactionToString(int idTransaction) throws NonExistentTransactionKeyException {
+
+        if (idTransaction >= _transactions.size())
+            throw new NonExistentTransactionKeyException();
+
+        return _transactions.get(idTransaction).toString();
+    }
+
+    // ************************* RECIPE ***********************************
+
+    public Recipe registerRecipe(double alpha, ArrayList<String> idComponents, ArrayList<Integer> quantities) throws NonExistentProductKeyException{
+        ArrayList<Product> components = new ArrayList<Product>();
+
+        for (String i : idComponents) {
+            if (!_products.containsKey(i.toLowerCase()))
+                throw new NonExistentProductKeyException();
+
+            components.add(getProduct(i.toLowerCase()));
+        }
+
+        Recipe newRecipe = new Recipe(alpha, components, quantities);
+        return newRecipe;
+    }
+
+    // ************************* NOTIFICATIONS ***********************************
+
+    public void toggleNotifs(String idPartner, String idProduct) throws NonExistentPartnerKeyException, NonExistentProductKeyException {
+
+        if (!_partners.containsKey(idPartner.toLowerCase()))
+            throw new NonExistentPartnerKeyException();
+        if (!_products.containsKey(idProduct.toLowerCase()))
+            throw new NonExistentProductKeyException();
+
+        Partner partner = this.getPartner(idPartner);
+        Product product = this.getProduct(idProduct);
+
+        product.toggle(partner);
     }
 
     void importFile(String txtfile) throws IOException, BadEntryException {

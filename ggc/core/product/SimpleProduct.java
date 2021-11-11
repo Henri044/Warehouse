@@ -2,6 +2,7 @@ package ggc.core.product;
 
 import ggc.core.product.Product;
 import ggc.core.Partner;
+import ggc.core.Recipe;
 
 import java.io.Serializable;
 
@@ -21,6 +22,11 @@ public class SimpleProduct extends Product implements Serializable {
     @Override
     public boolean isSimpleProduct() {
         return true;
+    }
+
+    @Override
+    public Recipe getRecipe() {
+        return null;
     }
 
     /**

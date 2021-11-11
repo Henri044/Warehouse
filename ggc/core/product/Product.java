@@ -7,6 +7,7 @@ import java.util.List;
 import ggc.core.Batch;
 import ggc.core.Partner;
 import ggc.core.Observer;
+import ggc.core.Recipe;
 import ggc.core.*;
 
 import java.io.Serializable;
@@ -185,6 +186,8 @@ public abstract class Product implements Serializable {
             obs.update(n);
         }
     }
+
+    public abstract Recipe getRecipe();    
     
     public abstract boolean isSimpleProduct();
 
