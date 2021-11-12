@@ -22,18 +22,6 @@ public abstract class Transaction implements Serializable {
         _paymentDate = paymentDate;
     }
 
-    public void registerBreakdown(String partnerId, String productId, int quantity){
-        return; //TO DO
-    }
-
-    public void registerSale(String partnerId, String productId, int maxPaymentDate, int quantity){
-        return; //TO DO
-    }
-
-    public void registerPurchase(String partnerId, String productId, int price, int quantity){
-        return; //TO DO
-    }
-
     public int getPaymentDate(){
         return _paymentDate;
     }
@@ -65,4 +53,6 @@ public abstract class Transaction implements Serializable {
     public abstract String toString();
 
     public abstract boolean isAcquisition();
+
+    public abstract int getDeadline();
 }

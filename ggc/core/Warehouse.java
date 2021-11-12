@@ -567,6 +567,26 @@ public class Warehouse implements Serializable {
         return _transactions.get(idTransaction).toString();
     }
 
+    public void paySale(int idTransaction) {
+        // Verify if the id is a valid one
+        Transaction transaction = _transactions.get(idTransaction);
+        Partner partner = transaction.getPartner();
+        int valueToPay = 0;
+        if (!transaction.isAcquisition() /* && isn't paid yet */) {
+            // Check if the sale is past deadline or before deadline
+            if (transaction.getDeadline() < this.getDays()) {
+                // The partner pays with a fine
+                // Punishments?
+                // STATUS??
+            }
+            else {
+                // The partner pays with a discount
+                // STATUS??
+            }
+        }
+        _balance += valueToPay;
+    }
+
     // ************************* RECIPE ***********************************
 
     public Recipe registerRecipe(double alpha, ArrayList<String> idComponents, ArrayList<Integer> quantities) throws NonExistentProductKeyException{

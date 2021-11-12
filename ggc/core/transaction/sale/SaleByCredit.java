@@ -38,4 +38,9 @@ public class SaleByCredit extends Sale implements Serializable {
     public boolean isAcquisition(){
         return false;
     }
+
+    @Override
+    public int getDeadline() {
+        return _deadline;
+    }
 }

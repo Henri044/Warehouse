@@ -23,4 +23,8 @@ public class Acquisition extends Transaction implements Serializable {
     public boolean isAcquisition(){
         return true;
     }
+
+    public int getDeadline() {
+        return this.getPaymentDate();
+    }
 }
