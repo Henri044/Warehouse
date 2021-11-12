@@ -92,7 +92,6 @@ public abstract class Product implements Serializable {
     }
 
     public List<Observer> getObservers() {
-        System.out.println(_observers.size());
         return _observers;
     }
 

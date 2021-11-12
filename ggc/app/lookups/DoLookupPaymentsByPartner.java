@@ -12,7 +12,7 @@ import ggc.core.exception.NonExistentPartnerKeyException;
 
 public class DoLookupPaymentsByPartner extends Command<WarehouseManager> {
 
-  private String _idPartner;
+  private String idPartner;
 
   public DoLookupPaymentsByPartner(WarehouseManager receiver) {
     super(Label.PAID_BY_PARTNER, receiver);
@@ -21,16 +21,16 @@ public class DoLookupPaymentsByPartner extends Command<WarehouseManager> {
 
   @Override
   public void execute() throws CommandException, UnknownPartnerKeyException {
-    _idPartner = stringField("idPartner");
+    idPartner = stringField("idPartner");
 
     try {
 
-      String transactionsPaid = _receiver.transactionsPaidByPartnerToString(_idPartner);
+      String transactionsPaid = _receiver.transactionsPaidByPartnerToString(idPartner);
       _display.addLine(transactionsPaid);
       _display.display();
 
     } catch (NonExistentPartnerKeyException nepke) {
-      throw new UnknownPartnerKeyException(_idPartner);
+      throw new UnknownPartnerKeyException(idPartner);
     }
   }
 

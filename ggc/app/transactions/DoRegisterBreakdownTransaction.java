@@ -15,33 +15,33 @@ import ggc.app.exception.UnavailableProductException;
 
 public class DoRegisterBreakdownTransaction extends Command<WarehouseManager> {
 
-  private int _stock;;
-  private String _idProduct;
-  private String _idPartner;
+  private int stock;;
+  private String idProduct;
+  private String idPartner;
 
   public DoRegisterBreakdownTransaction(WarehouseManager receiver) {
     super(Label.REGISTER_BREAKDOWN_TRANSACTION, receiver);
     addStringField("idPartner", Message.requestPartnerKey());
     addStringField("idProduct", Message.requestProductKey());
-    addIntegerField("stock", Message.requestAmount());
+    addIntegerField("quantity", Message.requestAmount());
   }
 
   @Override
   public final void execute() throws CommandException, UnavailableProductException, UnknownProductKeyException, UnknownPartnerKeyException {
 
-    _idPartner = stringField("idPartner");
-    _idProduct = stringField("idProduct");
-    _stock = integerField("stock");
+    idPartner = stringField("idPartner");
+    idProduct = stringField("idProduct");
+    stock = integerField("quantity");
 
     try {
 
-      _receiver.registerBreakdownSale(_idPartner,_idProduct, _stock);
+      _receiver.registerBreakdownSale(idPartner, idProduct, stock);
     } catch (NonExistentPartnerKeyException nepke) {
-      throw new UnknownPartnerKeyException(_idPartner);
+      throw new UnknownPartnerKeyException(idPartner);
     } catch (NonExistentProductKeyException neprke) {
-      throw new UnknownProductKeyException(_idProduct);
+      throw new UnknownProductKeyException(idProduct);
     } catch (NonAvailableProductStockException napse) {
-      throw new UnavailableProductException(_idProduct, _stock, _receiver.getAvailableStockFromProduct(_idProduct));
+      throw new UnavailableProductException(idProduct, stock, _receiver.getAvailableStockFromProduct(idProduct));
     }
   }
 

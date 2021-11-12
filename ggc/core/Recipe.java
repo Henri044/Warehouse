@@ -3,6 +3,7 @@ package ggc.core;
 import java.util.ArrayList;
 
 import ggc.core.product.Product;
+import ggc.core.transaction.sale.BreakdownSale;
 
 public class Recipe {
 
@@ -35,4 +36,5 @@ public class Recipe {
 
         return recipe;
     }
+
 }

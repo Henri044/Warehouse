@@ -6,7 +6,9 @@ import ggc.core.status.Elite;
 import ggc.core.status.Status;
 import ggc.core.status.StatusContext;
 
-public class Normal implements Status {
+import java.io.Serializable;
+
+public class Normal implements Status, Serializable {
 	private static Normal _normalStatus = new Normal();
 
 	public static Normal getNormalStatus() {
@@ -22,7 +24,6 @@ public class Normal implements Status {
 		return;
 	}
 
-	/*
 	public double applyFine(double value, int paymentDate, int deadline, Product product) {
 		int N = 0;
 
@@ -52,7 +53,6 @@ public class Normal implements Status {
 			return value -= value*0.1;
 		return value;
 	}
-	*/
 
 	public String toString() {
 		return "NORMAL";

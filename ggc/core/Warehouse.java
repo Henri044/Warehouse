@@ -16,6 +16,7 @@ import ggc.core.exception.SamePartnerKeyException;
 import ggc.core.exception.NonExistentPartnerKeyException;
 import ggc.core.exception.NonExistentProductKeyException;
 import ggc.core.exception.NonAvailableProductStockException;
+import ggc.core.exception.NonAvailableAggregateProductStockException;
 import ggc.core.exception.NonExistentTransactionKeyException;
 import ggc.core.product.Product;
 import ggc.core.Partner;
@@ -354,14 +355,31 @@ public class Warehouse implements Serializable {
 
     // ************************* TRANSACTIONS ***********************************
   
-    public void registerNewSale(String idPartner, int deadline, String idProductToSell, int quantity) throws NonExistentPartnerKeyException, NonExistentProductKeyException, NonAvailableProductStockException {
+    public void registerNewSale(String idPartner, int deadline, String idProductToSell, int quantity) 
+    throws NonExistentPartnerKeyException, NonExistentProductKeyException, NonAvailableProductStockException, NonAvailableAggregateProductStockException{
+        int i = 0;
+
         if (!this.hasPartner(idPartner))
             throw new NonExistentPartnerKeyException();
         if (!this.hasProduct(idProductToSell))
             throw new NonExistentProductKeyException();
         // Checks if there is available stock in the warehouse
-        if (quantity > this.getProduct(idProductToSell).getTotalStock())
+        if (this.getProduct(idProductToSell).isSimpleProduct() && (quantity > this.getProduct(idProductToSell).getTotalStock()))
             throw new NonAvailableProductStockException();
+
+        if (!this.getProduct(idProductToSell).isSimpleProduct() && (quantity > this.getProduct(idProductToSell).getTotalStock())) {
+            int neededStock = quantity - this.getProduct(idProductToSell).getTotalStock();
+
+            ArrayList<Product> components = this.getProduct(idProductToSell).getRecipe().getComponents();
+            ArrayList<Integer> quantities = this.getProduct(idProductToSell).getRecipe().getQuantities();
+
+            while (components.size() > i) {
+                if((neededStock*quantities.get(i)) > components.get(i).getTotalStock()) {
+                    throw new NonAvailableAggregateProductStockException(components.get(i).getId(), neededStock*quantities.get(i), components.get(i).getTotalStock());
+                }
+                i++;
+            }
+        }
 
         // Register new transaction
         registerSaleByCredit(quantity, idPartner, idProductToSell, deadline);
@@ -400,7 +418,7 @@ public class Warehouse implements Serializable {
         else {
             //REGISTER SALE BY CREDIT WITH INTEREST
             //System.out.println("REGISTA VENDA COM JUROS");
-            //BALANCE??? WITH INTERESTS AND SHIT
+            //BALANCE??? WITH INTERESTS??
             sale = new SaleByCredit(idTransaction, baseValue, quantity, this.getPartner(idPartner), this.getProduct(idProductToSell), deadline);
         }
 
@@ -567,24 +585,12 @@ public class Warehouse implements Serializable {
         return _transactions.get(idTransaction).toString();
     }
 
-    public void paySale(int idTransaction) {
-        // Verify if the id is a valid one
-        Transaction transaction = _transactions.get(idTransaction);
-        Partner partner = transaction.getPartner();
-        int valueToPay = 0;
-        if (!transaction.isAcquisition() /* && isn't paid yet */) {
-            // Check if the sale is past deadline or before deadline
-            if (transaction.getDeadline() < this.getDays()) {
-                // The partner pays with a fine
-                // Punishments?
-                // STATUS??
-            }
-            else {
-                // The partner pays with a discount
-                // STATUS??
-            }
-        }
-        _balance += valueToPay;
+    public void receivePayment(int idTransaction) throws NonExistentTransactionKeyException {
+
+        if (idTransaction >= _transactions.size())
+            throw new NonExistentTransactionKeyException();
+
+        return;
     }
 
     // ************************* RECIPE ***********************************
@@ -616,6 +622,12 @@ public class Warehouse implements Serializable {
         Product product = this.getProduct(idProduct);
 
         product.toggle(partner);
+    }
+
+    public void registerNewProductNotification(String idProduct, String idPartner, double price) {
+        NewNotification notif = new NewNotification(this.getProduct(idProduct), price);
+        this.getProduct(idProduct).notifyObserver(notif);
+        this.getPartner(idPartner).getNotifications().remove(notif);
     }
 
     void importFile(String txtfile) throws IOException, BadEntryException {

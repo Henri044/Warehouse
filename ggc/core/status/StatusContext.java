@@ -1,8 +1,10 @@
 package ggc.core.status;
 
+import java.io.Serializable;
+
 import ggc.core.status.Status;
 
-public class StatusContext {
+public class StatusContext implements Serializable {
 
 	private Status _status;
 	private int _points;

@@ -9,6 +9,7 @@ import ggc.app.transactions.Message;
 import ggc.core.exception.NonAvailableProductStockException;
 import ggc.core.exception.NonExistentPartnerKeyException;
 import ggc.core.exception.NonExistentProductKeyException;
+import ggc.core.exception.NonAvailableAggregateProductStockException;
 
 import ggc.app.exception.UnavailableProductException;
 import ggc.app.exception.InvalidDateException;
@@ -32,7 +33,7 @@ public class DoRegisterSaleTransaction extends Command<WarehouseManager> {
     addStringField("idProduct", Message.requestProductKey());
     addIntegerField("quantity", Message.requestAmount());
   }
-
+  
   @Override
   public final void execute() throws CommandException, UnknownPartnerKeyException, UnknownProductKeyException, UnavailableProductException {
     _idPartner = stringField("idPartner");
@@ -49,6 +50,8 @@ public class DoRegisterSaleTransaction extends Command<WarehouseManager> {
       throw new UnknownProductKeyException(_idProduct);
     } catch (NonAvailableProductStockException napse) {
       throw new UnavailableProductException(_idProduct, _quantity, _receiver.getAvailableStockFromProduct(_idProduct));
+    } catch (NonAvailableAggregateProductStockException naapse) {
+      throw new UnavailableProductException(naapse.getIdProduct(), naapse.getRequestAmount(), naapse.getAvailableAmount());
     }
   }
 

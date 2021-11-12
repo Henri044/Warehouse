@@ -1,7 +1,7 @@
 *** tests/A-16-02-M-ok.out	2021-11-07 16:04:59.283344000 +0000
---- tests/A-16-02-M-ok.outhyp	2021-11-12 01:48:43.506446225 +0000
+--- tests/A-16-02-M-ok.outhyp	2021-11-12 16:56:48.945076938 +0000
 ***************
-*** 60,74 ****
+*** 60,117 ****
   4 - Registar compra
   5 - Receber pagamento de venda
   0 - Sair
@@ -14,22 +14,23 @@
 ! 0 - Sair
 ! Escolha uma opção: Identificador da transacção: VENDA|0|S1|SAL|5|25|25|10|9
 ! Gestão de Transacções
-  1 - Visualizar
-  2 - Registar desagregação
-  3 - Registar venda
---- 60,66 ----
-  4 - Registar compra
-  5 - Receber pagamento de venda
-  0 - Sair
-! Escolha uma opção: Gestão de Transacções
-  1 - Visualizar
-  2 - Registar desagregação
-  3 - Registar venda
-***************
-*** 86,109 ****
-  8 - Menu de Consultas
-  9 - Ver Saldo Global
-  0 - Sair
+! 1 - Visualizar
+! 2 - Registar desagregação
+! 3 - Registar venda
+! 4 - Registar compra
+! 5 - Receber pagamento de venda
+! 0 - Sair
+! Escolha uma opção: Menu Principal
+! 1 - Abrir
+! 2 - Guardar
+! 3 - Mostrar Data
+! 4 - Avançar Data
+! 5 - Gestão de Produtos
+! 6 - Gestão de Parceiros
+! 7 - Gestão de Transacções
+! 8 - Menu de Consultas
+! 9 - Ver Saldo Global
+! 0 - Sair
 ! Escolha uma opção: Gestão de Parceiros
 ! 1 - Mostrar parceiro
 ! 2 - Mostrar parceiros
@@ -48,15 +49,21 @@
 ! 6 - Mostrar vendas (e desagregações) com parceiro
 ! 0 - Sair
 ! Escolha uma opção: Menu Principal
-  1 - Abrir
-  2 - Guardar
-  3 - Mostrar Data
---- 78,85 ----
-  8 - Menu de Consultas
-  9 - Ver Saldo Global
+! 1 - Abrir
+! 2 - Guardar
+! 3 - Mostrar Data
+! 4 - Avançar Data
+! 5 - Gestão de Produtos
+! 6 - Gestão de Parceiros
+! 7 - Gestão de Transacções
+! 8 - Menu de Consultas
+! 9 - Ver Saldo Global
+! 0 - Sair
+! Escolha uma opção: 
+\ No newline at end of file
+--- 60,63 ----
+  4 - Registar compra
+  5 - Receber pagamento de venda
   0 - Sair
-! Escolha uma opção: Ficheiro a abrir: Abrir: Operação inválida: Problema ao abrir '0'.
-! Menu Principal
-  1 - Abrir
-  2 - Guardar
-  3 - Mostrar Data
+! Escolha uma opção: Identificador da transacção: 
+\ No newline at end of file

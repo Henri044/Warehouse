@@ -7,13 +7,14 @@ import java.util.List;
 
 import ggc.core.Observer;
 import ggc.core.Notification;
+import ggc.core.status.StatusContext;
 
 public class Partner implements Serializable, Observer {
 
     private String _id;
     private String _name;
     private String _address;
-    private String _status;
+    private StatusContext _status;
     private double _points;
     private double _acquisitionsValue;
     private double _effectiveSalesValue;
@@ -24,7 +25,7 @@ public class Partner implements Serializable, Observer {
         _id = id;
         _name = name;
         _address = address;
-        _status = "NORMAL";
+        _status = new StatusContext();
     }
 
     public void manageProductNotifications(String partnerId, String productId) {
@@ -44,10 +45,6 @@ public class Partner implements Serializable, Observer {
 
     public String getAddress() {
         return _address;
-    }
-
-    public String getStatus() {
-        return _status;
     }
 
     public double getPoints() {
@@ -79,7 +76,7 @@ public class Partner implements Serializable, Observer {
     }
 
     public String toString() {
-        return (_id + "|" + _name + "|" + _address + "|" + _status + "|" + Math.round(_points) +
+        return (_id + "|" + _name + "|" + _address + "|" + _status.statusToString() + "|" + Math.round(_points) +
          "|" + Math.round(_acquisitionsValue) + "|" + Math.round(_effectiveSalesValue) + "|" + Math.round(_paidSalesValue));
     }
 }

@@ -75,6 +75,7 @@ public class DoRegisterAcquisitionTransaction extends Command<WarehouseManager> 
 
           try {
             _receiver.registerAggregateProduct(_idProduct, _price, (_receiver.registerRecipe(_alpha, _products, _quantities)));
+            _receiver.registerNewProductNotification(_idProduct, _idPartner, _price);
           } catch (NonExistentProductKeyException nepke) {
             throw new UnknownProductKeyException(_products.get(i++));
           }
@@ -83,6 +84,7 @@ public class DoRegisterAcquisitionTransaction extends Command<WarehouseManager> 
 
         if (_hasRecipe.equals("n")) {
           _receiver.registerSimpleProduct(_idProduct, _price);
+          _receiver.registerNewProductNotification(_idProduct, _idPartner, _price);
 
         }
       }
