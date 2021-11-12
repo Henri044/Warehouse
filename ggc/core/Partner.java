@@ -7,6 +7,8 @@ import java.util.List;
 
 import ggc.core.Observer;
 import ggc.core.Notification;
+import ggc.core.DeliverNotificationMethod;
+import ggc.core.DeliverNotification;
 import ggc.core.status.StatusContext;
 
 public class Partner implements Serializable, Observer {
@@ -19,7 +21,9 @@ public class Partner implements Serializable, Observer {
     private double _acquisitionsValue;
     private double _effectiveSalesValue;
     private double _paidSalesValue;
-    private List<Notification> _notifications = new ArrayList<Notification>();
+    private ArrayList<Notification> _notifications = new ArrayList<Notification>();
+    private DeliverNotificationMethod _deliverNotificationMethod = new DeliverNotification();
+
 
     public Partner(String id, String name, String address) {
         _id = id;
@@ -68,11 +72,20 @@ public class Partner implements Serializable, Observer {
     }
 
     public void update(Notification notif) {
-        _notifications.add(notif);
+        //_notifications.add(notif);
+        _deliverNotificationMethod.addNotification(notif, _notifications);
     }
 
     public void clearNotifs() {
         _notifications.clear();
+    }
+
+    public DeliverNotificationMethod getDeliverNotificationMethod() {
+        return _deliverNotificationMethod;
+    }
+
+    public void setDeliverNotificationMethod(DeliverNotificationMethod dnm) {
+        _deliverNotificationMethod = dnm;
     }
 
     public String toString() {

@@ -8,7 +8,8 @@ import ggc.core.Batch;
 import ggc.core.Partner;
 import ggc.core.Observer;
 import ggc.core.Recipe;
-import ggc.core.*;
+import ggc.core.Notification;
+import ggc.core.BargainNotification;
 
 import java.io.Serializable;
 

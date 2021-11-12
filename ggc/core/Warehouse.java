@@ -442,7 +442,7 @@ public class Warehouse implements Serializable {
         if (this.getProduct(idProduct).getTotalStock() < quantity)
             throw new NonAvailableProductStockException();
 
-        double priceProduct = this.getProduct(idProduct).getPrice();
+        double priceProduct = this.getProduct(idProduct).getPrice()*quantity;
         BreakdownSale newBreakdownSale = new BreakdownSale(idTransaction, this.getProduct(idProduct).getPrice(), quantity, this.getPartner(idPartner), this.getProduct(idProduct), this.getDays());
         Recipe productRecipe = this.getProduct(idProduct).getRecipe();
 
