@@ -381,6 +381,9 @@ public class Warehouse implements Serializable {
             }
         }
 
+        if ((quantity > this.getProduct(idProductToSell).getTotalStock()))
+            throw new NonAvailableProductStockException();
+
         // Register new transaction
         registerSaleByCredit(quantity, idPartner, idProductToSell, deadline);
     }
@@ -587,12 +590,20 @@ public class Warehouse implements Serializable {
 
     public void receivePayment(int idTransaction) throws NonExistentTransactionKeyException {
 
-        if (idTransaction >= _transactions.size())
+        if (idTransaction >= _transactions.size() || idTransaction < 0)
             throw new NonExistentTransactionKeyException();
 
-        return;
-    }
+        Transaction newSale = _transactions.get(idTransaction);
 
+        if (!newSale.isSaleByCredit())
+            return;
+
+        if (newSale.isPaid())
+            return;
+
+        ((SaleByCredit)newSale).toggleIsPaid();
+    }    
+        
     // ************************* RECIPE ***********************************
 
     public Recipe registerRecipe(double alpha, ArrayList<String> idComponents, ArrayList<Integer> quantities) throws NonExistentProductKeyException{

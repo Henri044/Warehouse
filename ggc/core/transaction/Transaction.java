@@ -42,10 +42,6 @@ public abstract class Transaction implements Serializable {
         return _quantity;
     }
 
-    public boolean isPaid(){
-        return false; //TO DO
-    }
-
     public double getBaseValue() {
         return _baseValue;
     }
@@ -55,4 +51,8 @@ public abstract class Transaction implements Serializable {
     public abstract boolean isAcquisition();
 
     public abstract int getDeadline();
+
+    public abstract boolean isPaid();
+
+    public abstract boolean isSaleByCredit();
 }

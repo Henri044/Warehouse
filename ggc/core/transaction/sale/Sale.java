@@ -17,4 +17,8 @@ public abstract class Sale extends Transaction implements Serializable {
     public abstract boolean isAcquisition();
 
     public abstract int getDeadline();
+
+    public abstract boolean isPaid();
+
+    public abstract boolean isSaleByCredit();
 }

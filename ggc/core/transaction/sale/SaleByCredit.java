@@ -9,12 +9,14 @@ import java.io.Serializable;
 public class SaleByCredit extends Sale implements Serializable {
     private int _deadline;
     private double _amountPaid;
+    private boolean _isPaid;
 
     // SALE BY CREDIT WITHOUT INTEREST
     public SaleByCredit(int id, double baseValue, int quantity, int paymentDate, Partner provider, Product product){
         super(id, baseValue, quantity, provider, product, paymentDate);
         _deadline = paymentDate;
         _amountPaid = baseValue;
+        _isPaid = false;
     }
 
     // SALE BY CREDIT WITH INTEREST 
@@ -22,6 +24,7 @@ public class SaleByCredit extends Sale implements Serializable {
         super(id, baseValue, quantity, provider, product, 0);
         _deadline = deadline;
         _amountPaid = baseValue;
+        _isPaid = false;
     }
 
     //VENDA|id|idParceiro|idProduto|quantidade|valor-base|valor-a-pagamento|data-limite|data-pagamento
@@ -34,6 +37,10 @@ public class SaleByCredit extends Sale implements Serializable {
             + Math.round(this.getBaseValue()) + "|" + Math.round(_amountPaid) + "|" + this.getPaymentDate() + "|" + _deadline;
     }
 
+    public void toggleIsPaid() {
+        _isPaid = true;
+    }
+
     @Override
     public boolean isAcquisition(){
         return false;
@@ -42,5 +49,15 @@ public class SaleByCredit extends Sale implements Serializable {
     @Override
     public int getDeadline() {
         return _deadline;
+    }
+
+    @Override
+    public boolean isPaid() {
+        return _isPaid;
+    }
+
+    @Override
+    public boolean isSaleByCredit(){
+        return true;
     }
 }

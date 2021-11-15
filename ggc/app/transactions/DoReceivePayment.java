@@ -21,11 +21,12 @@ public class DoReceivePayment extends Command<WarehouseManager> {
 
   @Override
   public final void execute() throws CommandException, UnknownTransactionKeyException {
-    idTransaction = integerField("quantity");
+    idTransaction = integerField("idTransaction");
 
     try {
       _receiver.receivePayment(idTransaction);
     } catch (NonExistentTransactionKeyException netke) {
+        throw new UnknownTransactionKeyException(idTransaction);
     }
   }
 }

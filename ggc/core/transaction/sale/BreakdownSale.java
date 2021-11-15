@@ -63,4 +63,14 @@ public class BreakdownSale extends Sale implements Serializable {
     public int getDeadline() {
         return _deadline;
     }
+
+    @Override
+    public boolean isPaid() {
+        return true;
+    }
+
+    @Override
+    public boolean isSaleByCredit(){
+        return false;
+    }
 }
