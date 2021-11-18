@@ -2,7 +2,9 @@ package ggc.core;
 
 import ggc.core.product.Product;
 
-public abstract class Notification {
+import java.io.Serializable;
+
+public abstract class Notification implements Serializable {
     private Product _product;
     private double _price;
 

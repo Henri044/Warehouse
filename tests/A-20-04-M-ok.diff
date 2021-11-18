@@ -1,0 +1,70 @@
+*** tests/A-20-04-M-ok.out	2021-11-18 17:29:53.850835948 +0000
+--- tests/A-20-04-M-ok.outhyp	2021-11-18 20:36:22.417022008 +0000
+***************
+*** 44,50 ****
+  4 - Registar compra
+  5 - Receber pagamento de venda
+  0 - Sair
+! Escolha uma opção: Identificador da transacção: VENDA|0|M1|SAL|3|300|270|8|0
+  Gestão de Transacções
+  1 - Visualizar
+  2 - Registar desagregação
+--- 44,50 ----
+  4 - Registar compra
+  5 - Receber pagamento de venda
+  0 - Sair
+! Escolha uma opção: Identificador da transacção: VENDA|0|M1|SAL|3|300|300|8|0
+  Gestão de Transacções
+  1 - Visualizar
+  2 - Registar desagregação
+***************
+*** 52,58 ****
+  4 - Registar compra
+  5 - Receber pagamento de venda
+  0 - Sair
+! Escolha uma opção: Identificador da transacção: VENDA|1|M2|GARRAFA|24|240|216|4|0
+  Gestão de Transacções
+  1 - Visualizar
+  2 - Registar desagregação
+--- 52,58 ----
+  4 - Registar compra
+  5 - Receber pagamento de venda
+  0 - Sair
+! Escolha uma opção: Identificador da transacção: VENDA|1|M2|GARRAFA|24|240|240|4|0
+  Gestão de Transacções
+  1 - Visualizar
+  2 - Registar desagregação
+***************
+*** 79,85 ****
+  5 - Mostrar compras com parceiro
+  6 - Mostrar vendas (e desagregações) com parceiro
+  0 - Sair
+! Escolha uma opção: Identificador do parceiro: M1|Rohit Figueiredo|New Delhi, India|SELECTION|2700|0|300|270
+  Gestão de Parceiros
+  1 - Mostrar parceiro
+  2 - Mostrar parceiros
+--- 79,85 ----
+  5 - Mostrar compras com parceiro
+  6 - Mostrar vendas (e desagregações) com parceiro
+  0 - Sair
+! Escolha uma opção: Identificador do parceiro: M1|Rohit Figueiredo|New Delhi, India|NORMAL|0|0|0|0
+  Gestão de Parceiros
+  1 - Mostrar parceiro
+  2 - Mostrar parceiros
+***************
+*** 88,94 ****
+  5 - Mostrar compras com parceiro
+  6 - Mostrar vendas (e desagregações) com parceiro
+  0 - Sair
+! Escolha uma opção: Identificador do parceiro: M2|Toshiba|Tokyo, Japan|SELECTION|2160|0|240|216
+  Gestão de Parceiros
+  1 - Mostrar parceiro
+  2 - Mostrar parceiros
+--- 88,94 ----
+  5 - Mostrar compras com parceiro
+  6 - Mostrar vendas (e desagregações) com parceiro
+  0 - Sair
+! Escolha uma opção: Identificador do parceiro: M2|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
+  Gestão de Parceiros
+  1 - Mostrar parceiro
+  2 - Mostrar parceiros

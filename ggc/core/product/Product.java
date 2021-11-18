@@ -124,11 +124,23 @@ public abstract class Product implements Serializable {
     }
 
     public void addBatch(Batch b) {
-        _batches.add(b);
-        if (_minPrice > b.getPrice()) {
-            BargainNotification notif = new BargainNotification(this, b.getPrice());
-            notifyObserver(notif);
+
+        if (_batches.size() != 0) {
+            double minPriceAtm = _batches.get(0).getPrice();
+
+            for (Batch batches : _batches) {
+                if (batches.getPrice() < minPriceAtm) {
+                    minPriceAtm = batches.getPrice();
+                }
+            }
+
+            if (b.getPrice() < minPriceAtm) {
+                BargainNotification notif = new BargainNotification(this, b.getPrice());
+                notifyObserver(notif);
+            }
         }
+        
+        _batches.add(b);
     }
 
     public void setMaxPrice(double maxPrice) {

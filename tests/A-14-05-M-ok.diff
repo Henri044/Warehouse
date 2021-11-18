@@ -1,0 +1,21 @@
+*** tests/A-14-05-M-ok.out	2021-11-18 17:29:53.847835943 +0000
+--- tests/A-14-05-M-ok.outhyp	2021-11-18 20:36:12.206031970 +0000
+***************
+*** 109,116 ****
+  1 - Produtos com Preço Abaixo de Limite
+  2 - Facturas pagas por parceiro
+  0 - Sair
+! Escolha uma opção: Identificador do parceiro: VENDA|1|M1|ROLHA|3|6|6|3|2
+! VENDA|4|M1|SAL|5|30|30|3|2
+  Consultas
+  1 - Produtos com Preço Abaixo de Limite
+  2 - Facturas pagas por parceiro
+--- 109,116 ----
+  1 - Produtos com Preço Abaixo de Limite
+  2 - Facturas pagas por parceiro
+  0 - Sair
+! Escolha uma opção: Identificador do parceiro: VENDA|1|M1|ROLHA|3|6|6|3|0
+! VENDA|4|M1|SAL|5|30|30|3|0
+  Consultas
+  1 - Produtos com Preço Abaixo de Limite
+  2 - Facturas pagas por parceiro

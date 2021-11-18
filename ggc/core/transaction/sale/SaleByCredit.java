@@ -34,7 +34,7 @@ public class SaleByCredit extends Sale implements Serializable {
             + Math.round(this.getBaseValue()) + "|" + Math.round(_amountPaid) + "|" + _deadline;
         }
         return "VENDA|" + this.getId() + "|" + this.getPartner().getId() + "|" + this.getProduct().getId() + "|" + this.getQuantity() + "|"
-            + Math.round(this.getBaseValue()) + "|" + Math.round(_amountPaid) + "|" + this.getPaymentDate() + "|" + _deadline;
+            + Math.round(this.getBaseValue()) + "|" + Math.round(_amountPaid) + "|" + _deadline + "|" + this.getPaymentDate();
     }
 
     public void toggleIsPaid() {

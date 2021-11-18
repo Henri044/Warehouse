@@ -27,7 +27,6 @@ public class DoRegisterAcquisitionTransaction extends Command<WarehouseManager> 
   private ArrayList<Integer> _quantities = new ArrayList<Integer>();
   private ArrayList<String> _products = new ArrayList<String>();
 
-
   public DoRegisterAcquisitionTransaction(WarehouseManager receiver) {
     super(Label.REGISTER_ACQUISITION_TRANSACTION, receiver);
     addStringField("idPartner", Message.requestPartnerKey());
@@ -40,17 +39,19 @@ public class DoRegisterAcquisitionTransaction extends Command<WarehouseManager> 
   public final void execute() throws CommandException, UnknownPartnerKeyException, UnknownProductKeyException {
     Form form = new Form();
 
+
     _idPartner = stringField("idPartner");
     _idProduct = stringField("idProduct");
     _price = realField("price");
     _stock = integerField("stock");
+    String idException = new String();
 
     if (!_receiver.hasProduct(_idProduct)) {
         form.addStringField("hasRecipe", Message.requestAddRecipe());
         form.parse();
         _hasRecipe = form.stringField("hasRecipe");
 
-        if (_hasRecipe.equals("S")) {
+        if (_hasRecipe.equals("s")) {
           form = new Form();
 
           form.addIntegerField("numberOfComponents", Message.requestNumberOfComponents());
@@ -73,11 +74,18 @@ public class DoRegisterAcquisitionTransaction extends Command<WarehouseManager> 
             _products.add(i, (form2.stringField("idComponents")));
           }
 
+          for (String id : _products) {
+            if (!_receiver.hasProduct(id)) {
+              idException = id;
+              break;
+            }
+          }
+
           try {
             _receiver.registerAggregateProduct(_idProduct, _price, (_receiver.registerRecipe(_alpha, _products, _quantities)));
             _receiver.registerNewProductNotification(_idProduct, _idPartner, _price);
           } catch (NonExistentProductKeyException nepke) {
-            throw new UnknownProductKeyException(_products.get(i++));
+            throw new UnknownProductKeyException(idException);
           }
 
         }

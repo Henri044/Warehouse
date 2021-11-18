@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import ggc.core.product.Product;
 import ggc.core.transaction.sale.BreakdownSale;
 
-public class Recipe {
+import java.io.Serializable;
+
+public class Recipe implements Serializable {
 
     private double _alpha;
     private ArrayList<Product> _products;
@@ -15,6 +17,10 @@ public class Recipe {
         _alpha = alpha;
         _products = new ArrayList<Product>(products);
         _quantities = new ArrayList<Integer>(quantities);
+    }
+
+    public double getAlpha() {
+        return _alpha;
     }
 
     public ArrayList<Product> getComponents() {

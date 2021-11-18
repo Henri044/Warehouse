@@ -1,0 +1,74 @@
+*** tests/A-20-11-M-ok.out	2021-11-18 17:29:53.850835948 +0000
+--- tests/A-20-11-M-ok.outhyp	2021-11-18 20:36:24.364020109 +0000
+***************
+*** 63,70 ****
+  5 - Mostrar compras com parceiro
+  6 - Mostrar vendas (e desagregações) com parceiro
+  0 - Sair
+! Escolha uma opção: M1|Rohit Figueiredo|New Delhi, India|NORMAL|1000|0|100|100
+! M2|Toshiba|Tokyo, Japan|NORMAL|1000|0|100|100
+  S1|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
+  Gestão de Parceiros
+  1 - Mostrar parceiro
+--- 63,70 ----
+  5 - Mostrar compras com parceiro
+  6 - Mostrar vendas (e desagregações) com parceiro
+  0 - Sair
+! Escolha uma opção: M1|Rohit Figueiredo|New Delhi, India|NORMAL|0|0|0|0
+! M2|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
+  S1|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
+  Gestão de Parceiros
+  1 - Mostrar parceiro
+***************
+*** 178,184 ****
+  4 - Registar compra
+  5 - Receber pagamento de venda
+  0 - Sair
+! Escolha uma opção: Identificador da transacção: VENDA|2|M1|SAL|1|100|160|2|8
+  Gestão de Transacções
+  1 - Visualizar
+  2 - Registar desagregação
+--- 178,184 ----
+  4 - Registar compra
+  5 - Receber pagamento de venda
+  0 - Sair
+! Escolha uma opção: Identificador da transacção: VENDA|2|M1|SAL|1|100|100|2|0
+  Gestão de Transacções
+  1 - Visualizar
+  2 - Registar desagregação
+***************
+*** 186,192 ****
+  4 - Registar compra
+  5 - Receber pagamento de venda
+  0 - Sair
+! Escolha uma opção: Identificador da transacção: VENDA|3|M2|SAL|1|100|115|8|11
+  Gestão de Transacções
+  1 - Visualizar
+  2 - Registar desagregação
+--- 186,192 ----
+  4 - Registar compra
+  5 - Receber pagamento de venda
+  0 - Sair
+! Escolha uma opção: Identificador da transacção: VENDA|3|M2|SAL|1|100|100|8|0
+  Gestão de Transacções
+  1 - Visualizar
+  2 - Registar desagregação
+***************
+*** 213,220 ****
+  5 - Mostrar compras com parceiro
+  6 - Mostrar vendas (e desagregações) com parceiro
+  0 - Sair
+! Escolha uma opção: M1|Rohit Figueiredo|New Delhi, India|NORMAL|0|0|200|260
+! M2|Toshiba|Tokyo, Japan|NORMAL|0|0|200|215
+  S1|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
+  Gestão de Parceiros
+  1 - Mostrar parceiro
+--- 213,220 ----
+  5 - Mostrar compras com parceiro
+  6 - Mostrar vendas (e desagregações) com parceiro
+  0 - Sair
+! Escolha uma opção: M1|Rohit Figueiredo|New Delhi, India|NORMAL|0|0|0|0
+! M2|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
+  S1|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
+  Gestão de Parceiros
+  1 - Mostrar parceiro

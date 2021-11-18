@@ -229,10 +229,10 @@ public class Warehouse implements Serializable {
 
         // Checks if the price set in the new batch is higher than the current highest value
         // If so, change the max price
-        if (price > this.getProduct(idProduct).getPrice()) {
+        if (price > currentProduct.getPrice()) {
             this.getProduct(idProduct).setMaxPrice(price);
         }
-        if (price < this.getProduct(idProduct).getMinPrice()) {
+        if (price < currentProduct.getMinPrice()) {
             this.getProduct(idProduct).setMinPrice(price);
         }
     }
@@ -408,7 +408,6 @@ public class Warehouse implements Serializable {
                 this.getProduct(idProductToSell).deleteBatchesWithNoStock();
             }
         }
-
         _accountingBalance += baseValue;
 
         // If deadline is the current date, the sale is normal, otherwise the sale is by credit
@@ -423,6 +422,7 @@ public class Warehouse implements Serializable {
             //System.out.println("REGISTA VENDA COM JUROS");
             //BALANCE??? WITH INTERESTS??
             sale = new SaleByCredit(idTransaction, baseValue, quantity, this.getPartner(idPartner), this.getProduct(idProductToSell), deadline);
+            //_balance += baseValue;
         }
 
         //Add the sale to the transactions list
@@ -494,14 +494,9 @@ public class Warehouse implements Serializable {
         if (!_partners.containsKey(idPartner.toLowerCase()))
             throw new NonExistentPartnerKeyException();
 
-        /*
-        if(!hasProduct(idProduct)){
-            for (Observer obs : this.getProduct(idProduct).getObservers()) {
-                NewNotification notif2 = new NewNotification(this.getProduct(idProduct), price);
-                obs.update(notif2);
-            }
+        if (this.getProduct(idProduct).getTotalStock() == 0) {
+            this.registerNewProductNotification(idProduct, idPartner, price);
         }
-        */
 
         registerBatch(price, stock, this.getPartner(idPartner), idProduct);
 

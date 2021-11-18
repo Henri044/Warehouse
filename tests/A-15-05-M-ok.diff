@@ -1,0 +1,84 @@
+*** tests/A-15-05-M-ok.out	2021-11-18 17:29:53.848835944 +0000
+--- tests/A-15-05-M-ok.outhyp	2021-11-18 20:36:13.890030327 +0000
+***************
+*** 23,29 ****
+  4 - Registar compra
+  5 - Receber pagamento de venda
+  0 - Sair
+! Escolha uma opção: Identificador da transacção: DESAGREGAÇÃO|0|R1|GARRAFA|5|90|90|0|ROLHA:5:10#SAL:25:400#VIDRO:50:500
+  Gestão de Transacções
+  1 - Visualizar
+  2 - Registar desagregação
+--- 23,29 ----
+  4 - Registar compra
+  5 - Receber pagamento de venda
+  0 - Sair
+! Escolha uma opção: Identificador da transacção: DESAGREGAÇÃO|0|R1|GARRAFA|5|970|970|0|ROLHA:5:10#SAL:25:10#VIDRO:50:10
+  Gestão de Transacções
+  1 - Visualizar
+  2 - Registar desagregação
+***************
+*** 50,58 ****
+  0 - Sair
+  Escolha uma opção: GARRAFA|200|0|ROLHA:1#SAL:5#VIDRO:10
+  HIDROGENIO|200|5000
+! ROLHA|2|505
+! SAL|16|525
+! VIDRO|10|550
+  Gestão de Produtos
+  1 - Visualizar todos os produtos
+  2 - Visualizar todos os lotes
+--- 50,58 ----
+  0 - Sair
+  Escolha uma opção: GARRAFA|200|0|ROLHA:1#SAL:5#VIDRO:10
+  HIDROGENIO|200|5000
+! ROLHA|2|501
+! SAL|18|505
+! VIDRO|28|510
+  Gestão de Produtos
+  1 - Visualizar todos os produtos
+  2 - Visualizar todos os lotes
+***************
+*** 60,71 ****
+  4 - Visualizar lotes de um dado produto
+  0 - Sair
+  Escolha uma opção: HIDROGENIO|S1|200|5000
+! ROLHA|R1|2|5
+  ROLHA|R1|2|500
+! SAL|R1|16|25
+  SAL|S1|16|500
+  VIDRO|M1|10|500
+! VIDRO|R1|10|50
+  Gestão de Produtos
+  1 - Visualizar todos os produtos
+  2 - Visualizar todos os lotes
+--- 60,71 ----
+  4 - Visualizar lotes de um dado produto
+  0 - Sair
+  Escolha uma opção: HIDROGENIO|S1|200|5000
+! ROLHA|R1|2|1
+  ROLHA|R1|2|500
+! SAL|R1|18|5
+  SAL|S1|16|500
+  VIDRO|M1|10|500
+! VIDRO|R1|28|10
+  Gestão de Produtos
+  1 - Visualizar todos os produtos
+  2 - Visualizar todos os lotes
+***************
+*** 91,97 ****
+  5 - Mostrar compras com parceiro
+  6 - Mostrar vendas (e desagregações) com parceiro
+  0 - Sair
+! Escolha uma opção: Identificador do parceiro: R1|António Figueiredo|Lisboa|NORMAL|900|0|0|0
+  Gestão de Parceiros
+  1 - Mostrar parceiro
+  2 - Mostrar parceiros
+--- 91,97 ----
+  5 - Mostrar compras com parceiro
+  6 - Mostrar vendas (e desagregações) com parceiro
+  0 - Sair
+! Escolha uma opção: Identificador do parceiro: R1|António Figueiredo|Lisboa|NORMAL|0|0|0|0
+  Gestão de Parceiros
+  1 - Mostrar parceiro
+  2 - Mostrar parceiros

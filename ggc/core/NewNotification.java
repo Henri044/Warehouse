@@ -3,7 +3,9 @@ package ggc.core;
 import ggc.core.product.Product;
 import ggc.core.Notification;
 
-public class NewNotification extends Notification {
+import java.io.Serializable;
+
+public class NewNotification extends Notification implements Serializable {
 
 	public NewNotification (Product product, double price) {
 		super(product, price);
