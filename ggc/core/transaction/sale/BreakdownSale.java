@@ -17,12 +17,17 @@ public class BreakdownSale extends Sale implements Serializable {
         _deadline = paymentDate;
     }
 
-    public double getComponentPrice(Product component) {
+    public double getComponentPrice(Product component, int quantity) {
         double price = 0;
-        int i = 0;
 
-        price += (this.getProduct().getRecipe().getComponents().get(i).getPrice()*this.getProduct().getRecipe().getQuantities().get(i)*this.getQuantity());
-        i++;
+        if (component.getBatches().size() != 0) {
+            price = component.getCheapestBatch().getPrice()*quantity*this.getQuantity();
+        }
+
+        else {
+            price = component.getPrice()*quantity*this.getQuantity();
+        }
+
         return price;
     }
 
@@ -35,22 +40,22 @@ public class BreakdownSale extends Sale implements Serializable {
 
             recipe += (this.getProduct().getRecipe().getComponents().get(i).getId() + ":" 
             + this.getProduct().getRecipe().getQuantities().get(i)*this.getQuantity() + ":" 
-            + (int)Math.round(this.getComponentPrice(this.getProduct().getRecipe().getComponents().get(i))) + "#");
+            + (int)Math.round(this.getComponentPrice(this.getProduct().getRecipe().getComponents().get(i), this.getProduct().getRecipe().getQuantities().get(i))) + "#");
 
-            allComponentsPrice += (int)(Math.round(this.getComponentPrice(this.getProduct().getRecipe().getComponents().get(i))));
+            allComponentsPrice += (int)(Math.round(this.getComponentPrice(this.getProduct().getRecipe().getComponents().get(i), this.getProduct().getRecipe().getQuantities().get(i))));
         }
 
         recipe = recipe.substring(0, recipe.length() - 1);
 
-        if ((this.getBaseValue()*this.getQuantity() - allComponentsPrice) > 0) {
+        if ((this.getBaseValue() - allComponentsPrice) > 0) {
             return ("DESAGREGAÇÃO|" + this.getId() + "|" + this.getPartner().getId() + "|" + this.getProduct().getId() + "|" + this.getQuantity() + "|"
-            + Math.round(this.getBaseValue()*this.getQuantity() - allComponentsPrice) + "|" + Math.round(this.getBaseValue()*this.getQuantity() - allComponentsPrice) + "|"
+            + Math.round(this.getBaseValue() - allComponentsPrice) + "|" + Math.round(this.getBaseValue() - allComponentsPrice) + "|"
             + _deadline + "|" + recipe);
         }
 
         else {
             return ("DESAGREGAÇÃO|" + this.getId() + "|" + this.getPartner().getId() + "|" + this.getProduct().getId() + "|" + this.getQuantity() + "|"
-            + Math.round(this.getBaseValue()*this.getQuantity() - allComponentsPrice) + "|" + 0 + "|" + _deadline + "|" + recipe);
+            + Math.round(this.getBaseValue() - allComponentsPrice) + "|" + 0 + "|" + _deadline + "|" + recipe);
         }
     }
 

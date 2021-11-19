@@ -16,7 +16,7 @@ public class SaleByCredit extends Sale implements Serializable {
         super(id, baseValue, quantity, provider, product, paymentDate);
         _deadline = paymentDate;
         _amountPaid = baseValue;
-        _isPaid = false;
+        _isPaid = true;
     }
 
     // SALE BY CREDIT WITH INTEREST 
@@ -39,6 +39,10 @@ public class SaleByCredit extends Sale implements Serializable {
 
     public void toggleIsPaid() {
         _isPaid = true;
+    }
+
+    public void setAmountPaid(double value) {
+        _amountPaid = value;
     }
 
     @Override

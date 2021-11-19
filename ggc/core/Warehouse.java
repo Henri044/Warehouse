@@ -425,6 +425,8 @@ public class Warehouse implements Serializable {
             //_balance += baseValue;
         }
 
+        sale.getPartner().addEffectiveSalesValue(baseValue);
+
         //Add the sale to the transactions list
         _transactions.add(sale);
     }
@@ -433,7 +435,9 @@ public class Warehouse implements Serializable {
     throws NonAvailableProductStockException, NonExistentPartnerKeyException, NonExistentProductKeyException {
         int idTransaction = _transactions.size();
         int i = 0;
+        int remainingQuantity = quantity;
         double price = 0;
+        double priceProduct = 0;
         double priceAllComponents = 0;
 
         if (!_partners.containsKey(idPartner.toLowerCase()))
@@ -445,46 +449,65 @@ public class Warehouse implements Serializable {
         if (this.getProduct(idProduct).getTotalStock() < quantity)
             throw new NonAvailableProductStockException();
 
-        double priceProduct = this.getProduct(idProduct).getPrice()*quantity;
-        BreakdownSale newBreakdownSale = new BreakdownSale(idTransaction, this.getProduct(idProduct).getPrice(), quantity, this.getPartner(idPartner), this.getProduct(idProduct), this.getDays());
         Recipe productRecipe = this.getProduct(idProduct).getRecipe();
 
-        if(!this.getProduct(idProduct).isSimpleProduct()) {
+        if (!this.getProduct(idProduct).isSimpleProduct()) {
 
-            this.getProduct(idProduct).removeStock(quantity);
-            Batch cheapestBatch = this.getProduct(idProduct).getCheapestBatch();
-            cheapestBatch.removeStock(quantity);
+            if (this.getProduct(idProduct).getBatches().size() > 1) {
 
-            if (cheapestBatch.getStock() == 0) {
-                // Deletes the batch
-                this.getProduct(idProduct).deleteBatchesWithNoStock();
+                while (remainingQuantity != 0) {
+                    Batch cheapestBatch = this.getProduct(idProduct).getCheapestBatch();
+                    priceProduct += cheapestBatch.getPrice();
+                    cheapestBatch.removeStock(1);
+                    this.getProduct(idProduct).removeStock(1);
+                    remainingQuantity -= 1;
+
+                    if (cheapestBatch.getStock() == 0) {
+                        // Deletes the batch
+                        this.getProduct(idProduct).deleteBatchesWithNoStock();
+                    }
+                }
             }
 
+            else {
+
+                this.getProduct(idProduct).removeStock(quantity);
+                Batch cheapestBatch = this.getProduct(idProduct).getCheapestBatch();
+                cheapestBatch.removeStock(quantity);
+                priceProduct += cheapestBatch.getPrice()*quantity;
+
+                if (cheapestBatch.getStock() <= 0) {
+                    // Deletes the batch
+                    this.getProduct(idProduct).deleteBatchesWithNoStock();
+                }
+            }
+
+            BreakdownSale newBreakdownSale = new BreakdownSale(idTransaction, priceProduct, quantity, this.getPartner(idPartner), this.getProduct(idProduct), this.getDays());
             ArrayList<Product> components = productRecipe.getComponents();
             ArrayList<Integer> quantities = productRecipe.getQuantities();
             while (components.size() > i) {
 
-                Product product = components.get(i);
-                quantity = quantities.get(i);
-                if (product.getBatches().size() != 0) {
-                    price += product.getCheapestBatch().getPrice();
+                if (components.get(i).getBatches().size() != 0) {
+                    price = components.get(i).getCheapestBatch().getPrice();
                 }
                 else {
-                    price += product.getPrice();
+                    price = components.get(i).getPrice();
                 }
 
-                priceAllComponents += price*quantity;
-                registerBatch(price, quantity, this.getPartner(idPartner), product.getId());
+                priceAllComponents += price*quantities.get(i)*quantity;
+                registerBatch(price, quantities.get(i)*quantity, this.getPartner(idPartner), components.get(i).getId());
                 i++;
             }
 
             if ((priceProduct - priceAllComponents) > 0) {
                 _balance += priceProduct - priceAllComponents;
                 _accountingBalance += priceProduct - priceAllComponents;
+                newBreakdownSale.getPartner().getStatus().addPoints(10 * (priceProduct - priceAllComponents));
             }
             _transactions.add(newBreakdownSale);
         }
     }
+
 
     public void registerAcquisition(double price, int stock, String idPartner, String idProduct) throws NonExistentPartnerKeyException {
         int idTransaction = _transactions.size();
@@ -504,6 +527,7 @@ public class Warehouse implements Serializable {
         this.getPartner(idPartner).addAcquisitionValue(price * stock);
         _balance -= baseValue; 
         _accountingBalance -= baseValue;
+        //newAcquisition.getPartner().addAcquisitionValue(baseValue);
     }
 
     public String transactionsPaidByPartnerToString(String idPartner) throws NonExistentPartnerKeyException {
@@ -588,15 +612,41 @@ public class Warehouse implements Serializable {
         if (idTransaction >= _transactions.size() || idTransaction < 0)
             throw new NonExistentTransactionKeyException();
 
-        Transaction newSale = _transactions.get(idTransaction);
+        Transaction t = _transactions.get(idTransaction);
 
-        if (!newSale.isSaleByCredit())
+        if (!t.isSaleByCredit() || t.isPaid())
             return;
 
-        if (newSale.isPaid())
-            return;
+        else {
+            // see if it apply a fine or a discount (only doing for NORMAL state)
+            int n;
+            double value = t.getBaseValue();
 
-        ((SaleByCredit)newSale).toggleIsPaid();
+            if (t.getProduct().isSimpleProduct())
+                n = 5;
+            else
+                n = 3;
+
+            // Discount
+            if (n <= (t.getDeadline() - this.getDays()))
+                value -= value*0.1;
+            // Fine
+            else if ((this.getDays() - t.getDeadline()) >= 0 && (this.getDays() - t.getDeadline()) <= n)
+                value += value*0.05;
+            else if ((this.getDays() - t.getDeadline()) > n)
+                value += value*0.1;
+
+            _balance += value;
+
+            double pointsToAdd = 10 * t.getBaseValue();
+
+            t.getPartner().getStatus().addPoints(pointsToAdd);
+            t.getPartner().addPaidSalesValue(value);
+            t.setPaymentDate(this.getDays());
+
+            ((SaleByCredit)t).setAmountPaid(value);
+            ((SaleByCredit)t).toggleIsPaid();
+        }
     }    
         
     // ************************* RECIPE ***********************************

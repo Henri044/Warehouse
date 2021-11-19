@@ -49,7 +49,7 @@ Escolha uma opção: Identificador da transacção: Gestão de Transacções
 4 - Registar compra
 5 - Receber pagamento de venda
 0 - Sair
-Escolha uma opção: Identificador da transacção: VENDA|1|M1|SAL|10|1000|1000|7|0
+Escolha uma opção: Identificador da transacção: VENDA|1|M1|SAL|10|1000|900|7|0
 Gestão de Transacções
 1 - Visualizar
 2 - Registar desagregação
@@ -76,7 +76,7 @@ Escolha uma opção: Gestão de Parceiros
 5 - Mostrar compras com parceiro
 6 - Mostrar vendas (e desagregações) com parceiro
 0 - Sair
-Escolha uma opção: M1|Rohit Figueiredo|New Delhi, India|NORMAL|0|0|0|0
+Escolha uma opção: M1|Rohit Figueiredo|New Delhi, India|NORMAL|36000|0|3600|3500
 M2|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
 S1|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
 Gestão de Parceiros
@@ -154,7 +154,7 @@ Escolha uma opção: Gestão de Parceiros
 5 - Mostrar compras com parceiro
 6 - Mostrar vendas (e desagregações) com parceiro
 0 - Sair
-Escolha uma opção: M1|Rohit Figueiredo|New Delhi, India|NORMAL|0|0|0|0
+Escolha uma opção: M1|Rohit Figueiredo|New Delhi, India|NORMAL|46000|0|4600|4500
 M2|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
 S1|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
 Gestão de Parceiros

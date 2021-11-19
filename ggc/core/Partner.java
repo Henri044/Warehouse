@@ -17,7 +17,6 @@ public class Partner implements Serializable, Observer {
     private String _name;
     private String _address;
     private StatusContext _status;
-    private double _points;
     private double _acquisitionsValue;
     private double _effectiveSalesValue;
     private double _paidSalesValue;
@@ -52,7 +51,7 @@ public class Partner implements Serializable, Observer {
     }
 
     public double getPoints() {
-        return _points;
+        return _status.getPoints();
     }
 
     public double getAcquisitionsValue() {
@@ -67,8 +66,20 @@ public class Partner implements Serializable, Observer {
         return _paidSalesValue;
     }
 
+    public StatusContext getStatus() {
+        return _status;
+    }
+
     public void addAcquisitionValue(double n) {
         _acquisitionsValue += n;
+    }
+
+    public void addEffectiveSalesValue(double n) {
+        _effectiveSalesValue += n;
+    }
+
+    public void addPaidSalesValue(double n) {
+        _paidSalesValue += n;
     }
 
     public void update(Notification notif) {
@@ -89,7 +100,7 @@ public class Partner implements Serializable, Observer {
     }
 
     public String toString() {
-        return (_id + "|" + _name + "|" + _address + "|" + _status.statusToString() + "|" + Math.round(_points) +
+        return (_id + "|" + _name + "|" + _address + "|" + _status.statusToString() + "|" + Math.round(_status.getPoints()) +
          "|" + Math.round(_acquisitionsValue) + "|" + Math.round(_effectiveSalesValue) + "|" + Math.round(_paidSalesValue));
     }
 }

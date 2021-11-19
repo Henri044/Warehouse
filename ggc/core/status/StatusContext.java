@@ -7,7 +7,7 @@ import ggc.core.status.Status;
 public class StatusContext implements Serializable {
 
 	private Status _status;
-	private int _points;
+	private double _points;
 
 	public StatusContext() {
 		_status = Normal.getNormalStatus();
@@ -26,11 +26,11 @@ public class StatusContext implements Serializable {
 		_status = s;
 	}
 
-	public int getPoints() {
+	public double getPoints() {
 		return _points;
 	}
 
-	public void addPoints(int value) {
+	public void addPoints(double value) {
 		_points += value;
 	}
 

@@ -1,5 +1,5 @@
 *** tests/A-20-23-M-ok.out	2021-11-18 17:29:53.851835949 +0000
---- tests/A-20-23-M-ok.outhyp	2021-11-18 20:36:28.480016093 +0000
+--- tests/A-20-23-M-ok.outhyp	2021-11-19 18:31:21.279216516 +0000
 ***************
 *** 41,47 ****
   4 - Registar compra
@@ -30,7 +30,7 @@
   5 - Mostrar compras com parceiro
   6 - Mostrar vendas (e desagregações) com parceiro
   0 - Sair
-! Escolha uma opção: M1|Rohit Figueiredo|New Delhi, India|NORMAL|0|0|0|0
+! Escolha uma opção: M1|Rohit Figueiredo|New Delhi, India|NORMAL|226000|0|22600|22600
   M2|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
   S1|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
   Gestão de Parceiros
@@ -64,7 +64,7 @@
   4 - Registar compra
   5 - Receber pagamento de venda
   0 - Sair
-! Escolha uma opção: Identificador da transacção: VENDA|2|M1|SAL|1|100|100|1|0
+! Escolha uma opção: Identificador da transacção: VENDA|2|M1|SAL|1|100|110|1|20
   Gestão de Transacções
   1 - Visualizar
   2 - Registar desagregação
@@ -81,7 +81,7 @@
   5 - Mostrar compras com parceiro
   6 - Mostrar vendas (e desagregações) com parceiro
   0 - Sair
-! Escolha uma opção: M1|Rohit Figueiredo|New Delhi, India|NORMAL|0|0|0|0
+! Escolha uma opção: M1|Rohit Figueiredo|New Delhi, India|NORMAL|227000|0|22700|22710
   M2|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
   S1|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
   Gestão de Parceiros
@@ -98,7 +98,7 @@
   4 - Registar compra
   5 - Receber pagamento de venda
   0 - Sair
-! Escolha uma opção: Identificador da transacção: VENDA|3|M1|SAL|1|100|100|23|0
+! Escolha uma opção: Identificador da transacção: VENDA|3|M1|SAL|1|100|100|23|20
   Gestão de Transacções
   1 - Visualizar
   2 - Registar desagregação
@@ -115,7 +115,7 @@
   5 - Mostrar compras com parceiro
   6 - Mostrar vendas (e desagregações) com parceiro
   0 - Sair
-! Escolha uma opção: M1|Rohit Figueiredo|New Delhi, India|NORMAL|0|0|0|0
+! Escolha uma opção: M1|Rohit Figueiredo|New Delhi, India|NORMAL|228000|0|22800|22810
   M2|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
   S1|Toshiba|Tokyo, Japan|NORMAL|0|0|0|0
   Gestão de Parceiros

@@ -26,6 +26,10 @@ public abstract class Transaction implements Serializable {
         return _paymentDate;
     }
 
+    public void setPaymentDate(int day) {
+        _paymentDate = day;
+    }
+
     public Partner getPartner(){
         return _partner;
     }
