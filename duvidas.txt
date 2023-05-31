@@ -1,5 +1,0 @@
-- O Base Value é calculado já com o desconto do status?
-- addRecipe() da app???
-- quando passa a deadline o partner simplesmente perde os pontos/status?
-- o paymentDate é atualizado quando o partner paga?
-- falar dos padrões de desenho (Singleton na Date, Facade?, Observer nas Notifications)
